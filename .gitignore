@@ -14,15 +14,15 @@ temp/*
 webapps/cache/*
 
 # autoload file
-webapps/autoload/*
+webapps/config/autoload/*
 
 # compiled templates
 webapps/viewc/*
-webapps/calckvar/viewc/*
-webapps/csmohist/viewc/*
-webapps/curates/viewc/*
-webapps/factweb/viewc/*
-webapps/loadcensus/viewc/*
-webapps/matrixcsmo/viewc/*
-webapps/updinfo/viewc/*
+webapps/module/calckvar/viewc/*
+webapps/module/csmohist/viewc/*
+webapps/module/curates/viewc/*
+webapps/module/factweb/viewc/*
+webapps/module/loadcensus/viewc/*
+webapps/module/matrixcsmo/viewc/*
+webapps/module/updinfo/viewc/*
 
