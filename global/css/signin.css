@@ -1,0 +1,183 @@
+@charset "utf-8";
+
+#wrapper {
+	width: 460px;
+	margin: 0 auto;
+    padding: 20px 0;
+}
+
+#types-bar li {
+    float: left;
+    list-style-type: none;
+    margin: 20px;
+}
+
+#social-btns {
+	position: absolute;
+	top: 200px;
+	width: 300px;
+	margin-left: 430px;
+	margin-top: 20px;
+	float: left;
+}
+
+#social li.social-item a {
+	display: block;
+	line-height: 20px;
+	padding: 2px 0;
+	position: relative;
+}
+
+#social-btns li {
+    list-style-type: none;
+}
+
+#social-btns li.social-item a {
+	display: block;
+	height: 26px;
+	width: 120px;
+	vertical-align: middle;
+	position: relative;
+}
+
+#nav ul.social li img {
+    background: none repeat scroll 0 0 #fff;
+    float: left;
+    /* padding: 2px; */
+}
+
+#fb a { background: url(../img/vatia-sprites-all.png) 0 -2120px no-repeat; }
+/* #fb a:hover { background-position: -123px -2120px !important; }*/
+
+#tw a { background: url(../img/vatia-sprites-all.png) 0 -2150px no-repeat; }
+/* #tw a:hover { background-position: -123px -2150px !important; }*/
+
+#mys a { background: url(../img/vatia-sprites-all.png) 0 -2180px no-repeat; }
+/* #mys a:hover { background-position: -123px -2180px !important; } */
+
+#gp a { background: url(../img/vatia-sprites-all.png) 0 -2210px no-repeat; }
+/* #gp a:hover { background-position: -123px -2210px !important; } */
+
+#yahoo a { background: url(../img/vatia-sprites-all.png) 0 -2240px no-repeat; }
+/* #yahoo a:hover { background-position: -123px -2240px !important; } */
+
+#msn a { background: url(../img/vatia-sprites-all.png) 0 -2270px no-repeat; }
+/* #msn a:hover { background-position: -123px -2270px !important; } */
+
+a#asoc {
+    display: block;
+    width: 65px;
+    height: 65px;
+    background: url(../img/vatia-sprites-all.png) 0 -1288px no-repeat;
+}
+
+a#asoc:hover, a#asoc.selected { background-position: -68px -1288px !important; }
+
+a#front {
+    display: block;
+    width: 65px;
+    height: 65px;
+    background: url(../img/vatia-sprites-all.png) 0 -1221px no-repeat;
+}
+
+a#front:hover, a#front.selected { background-position: -68px -1221px !important; }
+
+a#corp {
+    display: block;
+    width: 65px;
+    height: 65px;
+    background: url(../img/vatia-sprites-all.png) 0 -1155px no-repeat;
+}
+
+a#corp:hover, a#corp.selected { background-position: -68px -1155px !important; }
+
+a#cial:link {
+    display: block;
+    width: 65px;
+    height: 65px;
+    background: url(../img/vatia-sprites-all.png) 0 -1088px no-repeat;
+}
+
+a#cial:hover, a#cial.selected { background-position: -68px -1088px !important; }
+
+span a:hover{ border: 1px solid red; }
+
+
+ul#types-bar span {
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+#login-form {
+	width:395px;
+    float: left;
+}
+
+/* #signin-idcte input[type=text] {
+    background: url(../img/shield.png) right center no-repeat;
+    padding-right: 18px;
+}
+
+#signin-idcte input[type=text]:focus {
+    background-color: #fff;
+    background: url(../img/shield.png) right center no-repeat;
+    padding-right: 18px;
+} */
+
+#signin-captcha {
+    margin-top: 12px;
+}
+
+#signin-pwdmngr, #signin-cmd {
+    margin: 8px;
+    padding: 4px;
+}
+
+#signin-pwdmngr a {
+    padding-left: 22px;
+    background: url(../img/link-go.png) left no-repeat;
+}
+
+#signin-pwdmngr #lost-pwd {
+    float: right;
+}
+
+#signin-pwdmngr #change-pwd {
+    float: left;
+}
+
+#signin-cmd #remeber-login {
+    float: left;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#signin-cmd #remeber-login label {
+    margin: 0;
+    font-size: 12px !important;
+}
+
+#signin-cmd #remeber-login label:hover {
+    color: #363;
+}
+
+input[type=checkbox] {
+    position: absolute;
+    right: 9000px;
+    /* display: none;
+    visibility: hidden; */
+}
+
+.checkbox, .radio {
+    background: url(../img/uncheck.png) no-repeat;
+    padding-left: 28px;
+    padding-top: 4px;
+}
+
+.checkbox:hover {
+    text-decoration: underline;
+}
+
+.checked {
+    background: url(../img/check.png) no-repeat;
+}

@@ -1,0 +1,28 @@
+*~
+*.bak
+*.swp
+temp/
+.project
+.buildpath
+.settings/
+
+# log files
+logs/*
+temp/*
+
+# cache files
+webapps/cache/*
+
+# autoload file
+webapps/autoload/*
+
+# compiled templates
+webapps/viewc/*
+webapps/calckvar/viewc/*
+webapps/csmohist/viewc/*
+webapps/curates/viewc/*
+webapps/factweb/viewc/*
+webapps/loadcensus/viewc/*
+webapps/matrixcsmo/viewc/*
+webapps/updinfo/viewc/*
+

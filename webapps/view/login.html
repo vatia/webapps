@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Vatia :: Webapps</title>
+
+<base href="{{baseurl}}" target="_self" />
+
+<link rel="shortcut icon" href="global/favicon.ico" type="image/x-icon" />
+
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/default.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/signin.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/forms.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/dialogbox.css" />
+
+<script type="text/javascript" src="global/js/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.pngfix.js" charset="utf-8"></script>
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+
+    if ($.browser.msie) {
+        $(document).pngFix();
+        if ($.browser.version < 8) {
+            messagebox('Por favor utilice Internet Explorer version 8 o superior');
+        }
+    }
+
+    $(document).bind('contextmenu', function(e) { e.preventDefault(); return false; });
+
+    function selectType(v_type) {
+        var types = ['asoc', 'front', 'corp', 'cial'];
+        $(types).each(function(n) {
+            $('#types-bar #' + types[n]).removeClass('selected');
+        });
+        v_type.addClass('selected');
+    }
+
+    $('#types-bar #asoc').click(function() {
+        selectType($(this));
+        $('#signin-id label').text('Id Cliente :');
+        $('#signin-id').show();
+        $('#login-form input[name=usertype]').val('asoc');
+    });
+    $('#types-bar #front').click(function() {
+        selectType($(this));
+        $('#signin-id label').text('Id Cliente :');
+        $('#signin-id').show();
+        $('#login-form input[name=usertype]').val('front');
+    });
+    $('#types-bar #corp').click(function() {
+        selectType($(this));
+        $('#signin-id label').text('Id Grupo :');
+        $('#signin-id').show();
+        $('#login-form input[name=usertype]').val('corp');
+    });
+    $('#types-bar #cial').click(function() {
+        // $('#signin-id').hide();
+        selectType($(this));
+        $('#login-form input[name=usertype]').val('cial');
+    });
+
+    $('#signin-id input').focus(function() { if ($(this).val() == '123') $(this).val(''); });
+    $('#signin-username input').focus(function() { if ($(this).val() == 'demo') $(this).val(''); });
+    $('#signin-passwd input').focus(function() { if ($(this).val() == 'pwd') $(this).val(''); });
+
+    $('#login-form').submit(function() {
+
+        var v_ret = true;
+        var v_id = $('#signin-id input');
+        var v_usr = $('#signin-username input');
+        var v_pwd = $('#signin-passwd input');
+
+        if ((v_pwd.val() == '') || (v_pwd.val() == 'pwd')) {
+            v_pwd.val('');
+            messagebox('Debe digitar la clave de acceso');
+            v_ret = false;
+        }
+
+        if ((v_usr.val() == '') || (v_usr.val() == 'demo')) {
+            v_usr.val('');
+            messagebox('Debe digitar el nombre de usuario');
+            v_ret = false;
+        }
+
+        if (((v_id.val() == '') || (v_id.val() == '123')) &&
+            ($('#login-form input[name=usertype]').val() != 'cial')) {
+            v_id.val('');
+            messagebox('Debe digitar el id cliente o codigo de grupo');
+            v_ret = false;
+        }
+
+        if ($('#login-form input[name=usertype]').val() == '') {
+            messagebox('Debe elegir un tipo de usuario :<br>\n\n' +
+                       '- Asociado<br>\n- Frontera<br>\n' +
+                       '- Grupo Corporativo<br>\n- Asesor Comercial');
+            v_ret = false;
+        }
+        return v_ret;
+    });
+
+    $('a.btn-ok, #dialog-overlay, #dialog-box').click(function() {
+        $('#dialog-overlay, #dialog-box').hide();
+        return false;
+    });
+
+    $(window).resize(function() {
+        if (!$('#dialog-box').is(':hidden')) {
+            messagebox();
+        }
+    });
+
+    $('#signin-cmd #remeber-login input[type=checkbox]').change(function() {
+        if ($(this).is(':checked')) {
+            $(this).next('label').addClass('checked');
+        } else {
+            $(this).next('label').removeClass('checked');
+        }
+    });
+
+    <!-- if {{msg}} != '' -->
+    messagebox('{{msg}}');
+    <!-- endif -->
+});
+
+function messagebox(message) {
+
+    var maskHeight = $(document).height();
+    var maskWidth = $(window).width();
+    var dialogTop = (maskHeight/3) - ($('#dialog-box').height());
+    var dialogLeft = (maskWidth/2) - ($('#dialog-box').width()/2);
+
+    $('#dialog-overlay').css({height:maskHeight, width:maskWidth}).show();
+    $('#dialog-box').css({top:dialogTop, left:dialogLeft}).show();
+    $('#dialog-message').html(message);
+}
+
+</script>
+
+</head>
+<body>
+
+<div id="wrapper">
+
+    <div id="sign-in">
+
+        <ul id="types-bar">
+            <li><a id="asoc" href="javascript:void(0);"></a><span>Asociado</span></li>
+            <li><a id="front" href="javascript:void(0);"></a><span>Frontera</span></li>
+            <li><a id="corp" href="javascript:void(0);"></a><span>Grupo<br>Corporativo</span></li>
+            <li><a id="cial" href="javascript:void(0);"></a><span>Asesor<br>Comercial</span></li>
+        </ul>
+
+        <form action="{{baseurl}}login" method="post" id="login-form"
+            accept-charset="utf-8" class="bordes1 sombras1">
+
+            <input type="hidden" name="usertype" value="">
+
+            <fieldset id="signin-id">
+                <label>Id Cliente :</label>
+                <input name="id" type="text" maxlength="12" value="123">
+            </fieldset>
+
+            <fieldset id="signin-username">
+                <label>Usuario / Email :</label>
+                <input name="username" type="text" maxlength="128" value="demo">
+            </fieldset>
+
+            <fieldset id="signin-passwd">
+                <label>Clave / PIN :</label>
+                <input name="passwd" type="password" maxlength="64" value="pwd">
+            </fieldset>
+
+            <fieldset id="signin-captcha">
+            </fieldset>
+
+            <!--<fieldset id="signin-pwdmngr">
+                <div id="change-pwd">
+                    <a href="javascript:void(0);">Registrarse</a>
+                </div>
+                <div id="lost-pwd">
+                    <a href="javascript:void(0);">Olvid&eacute; mi contrase&ntilde;a</a>
+                </div>
+            </fieldset>-->
+
+            <fieldset id="signin-cmd">
+                <div id="remeber-login">
+                    <input type="checkbox" id="chkremember" name="remember" value="true">
+                    <label for="chkremember" class="checkbox">Recordarme en este equipo</label>
+                </div>
+                <div id="login-btn" class="login">
+                  <input type="submit" id="iniciar">
+                </div>
+            </fieldset>
+
+        </form>
+
+    </div>
+
+    <!--<div style="margin-left:460px" id="social-btns">
+        <p><strong>Iniciar sesi&oacute;n con:</strong></p>
+        <ul id="social">
+            <li class="social-item" id="fb"><a href="javascript:void(0);"></a></li>
+            <li class="social-item" id="tw"><a href="javascript:void(0);"></a></li>
+            <li class="social-item" id="mys"><a href="javascript:void(0);"></a></li>
+            <li class="social-item" id="gp"><a href="javascript:void(0);"></a></li>
+            <li class="social-item" id="yahoo"><a href="javascript:void(0);"></a></li>
+            <li class="social-item" id="msn"><a href="javascript:void(0);"></a></li>
+        </ul>
+    </div>-->
+
+</div>
+
+<div id="dialog-overlay"></div>
+<div id="dialog-box">
+    <div class="dialog-content">
+        <div id="dialog-message"></div>
+        <a href="javascript:void(0);" class="button">Close</a>
+    </div>
+</div>
+
+</body>
+</html>

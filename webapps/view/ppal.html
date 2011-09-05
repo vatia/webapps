@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Vatia :: Webapps</title>
+
+<base href="{{baseurl}}" target="_self" />
+
+<link rel="shortcut icon" href="global/favicon.ico" type="image/x-icon" />
+
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/default.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/smoothness/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/dateslider.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/forms.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/signin.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/dialogbox.css" />
+
+<script type="text/javascript" src="global/js/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery-ui.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.tools.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.range-slider.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.date-range-slider.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.idletimer.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.iframe.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.pngfix.js" charset="utf-8"></script>
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+
+    if ($.browser.msie) { $(document).pngFix(); }
+
+    $(document).bind('contextmenu', function(e) { e.preventDefault(); return false; });
+
+    var idleTime = 300000;
+    var initialSessionTimeoutMessage = "Su sesion expirara en <span id='sessionTimeoutCountdown'></span> segundos.<br /><br />Click en <b>OK</b> para continuar su sesion.";
+    var sessionTimeoutCountdownId = 'sessionTimeoutCountdown';
+    var redirectAfter = 20;
+    var redirectTo = '{{baseurl}}logout';
+    var keepAliveURL = '{{baseurl}}keepalive';
+    var expiredMessage = 'Su sesion ha expirado. Se cerrará la sesión por razones de seguridad.';
+    var running = false;
+    var timer;
+    var sessionTimeoutWarningDialog = $('#sessionTimeoutWarning');
+
+    function selectedApp(app) {
+        var apps = ['matriz', 'historicos', 'factura', 'tarifas', 'censo', 'calculo'];
+        $.each(apps, function(n) {
+            $('#' + apps[n] + '-app').removeClass('selected');
+        });
+        $(app).addClass('selected');
+    }
+
+    $('.tabs-item').click(function() {
+
+        selectedApp($(this));
+
+        switch($(this).attr('id')) {
+            case 'matriz-app':
+                $('#canvas').load('{{baseurl}}matrix-csmo');
+                break;
+            case 'historicos-app':
+                $('#canvas').load('{{baseurl}}csmo-hist');
+                break;
+            case 'factura-app':
+<!-- if {{usrtype}} === 'corp' -->
+                $('#canvas').html("<iframe id='factura-web' src='http://192.168.0.50:83/nreconsultavatia/Controlador/lib/elimina.php'></iframe>");
+                $('#canvas').html("<iframe id='factura-web' src='http://192.168.0.50:83/nreconsultavatia/Controlador/lib/autenticar.php?login_user_text={{nit_cedula}}&login_pass_text={{nit_cedula}}'></iframe>");
+<!-- elseif {{usrtype}} === 'cial' -->
+                $('#canvas').html("<iframe id='factura-web' src='http://192.168.0.50:83/nreconsultavatia/Controlador/lib/autenticar.php?login_user_text=admin&login_pass_text=vsdc'></iframe>");
+<!-- else -->
+                $('#canvas').html("<iframe id='factura-web' src='http://192.168.0.50:83/nreconsultavatia/Controlador/lib/autenticar.php?login_user_text={{nit_cedula}}&login_pass_text={{id_interno}}'></iframe>");
+<!-- endif -->
+              break;
+            case 'tarifas-app':
+                //$('#canvas').load('{{baseurl}}cu-rates');
+              break;
+            case 'censo-app':
+                //$('#canvas').load('{{baseurl}}load-census');
+              break;
+            case 'calculo-app':
+                //$('#canvas').load('{{baseurl}}calc-kvar');
+              break;
+        }
+    });
+
+    $('#home').click(function() {
+        document.location.href = 'http://www.vatia.com.co/inicio';
+    });
+
+    $('#logout').click(function() {
+        $('#factura-web').src('http://192.168.0.50:83/nreconsultavatia/Controlador/lib/elimina.php');
+        document.location.href = '{{baseurl}}logout';
+    });
+
+    $(sessionTimeoutWarningDialog).dialog({
+        title: 'Advertencia :: Expiración de la Sesión',
+        autoOpen: false,
+        closeOnEscape: false,
+        draggable: false,
+        width: 460,
+        minHeight: 60,
+        modal: true,
+        beforeclose: function() {
+            clearInterval(timer);
+            running = false;
+            $.ajax({
+              url: keepAliveURL,
+              async: false
+            });
+        },
+        buttons: {
+            OK: function() {
+                $(this).dialog('close');
+            }
+        },
+        resizable: false,
+        open: function() {
+            $('body').css('overflow','hidden');
+        },
+        close: function() {
+            $('body').css('overflow','auto');
+        }
+    });
+
+    $.idleTimer(idleTime);
+
+    $(document).bind("idle.idleTimer", function(){
+        if($.data(document, 'idleTimer') === 'idle' && !running) {
+            var counter = redirectAfter;
+            running = true;
+            $('#' + sessionTimeoutCountdownId).html(redirectAfter);
+            $(sessionTimeoutWarningDialog).dialog('open');
+            timer = setInterval(function() {
+                counter -= 1;
+                if(counter === 0) {
+                    $(sessionTimeoutWarningDialog).html(expiredMessage);
+                    $(sessionTimeoutWarningDialog).dialog('disable');
+                    window.location = redirectTo;
+                } else {
+                    $('#'+sessionTimeoutCountdownId).html(counter);
+                };
+            }, 1000);
+        };
+    });
+
+});
+
+function messagebox(message) {
+
+    var maskHeight = $(document).height();
+    var maskWidth = $(window).width();
+    var dialogTop = (maskHeight/3) - ($('#dialog-box').height());
+    var dialogLeft = (maskWidth/2) - ($('#dialog-box').width()/2);
+
+    $('#dialog-overlay').css({height:maskHeight, width:maskWidth}).show();
+    $('#dialog-box').css({top:dialogTop, left:dialogLeft}).show();
+    $('#dialog-message').html(message);
+}
+
+</script>
+
+</head>
+<body>
+
+<div id="container" class="bordes1 sombras1">
+
+    <!-- begin sidebar section -->
+    <div id="sidebar">
+
+        <div id="logo">
+            <a href="javascript:void(0);" id="logo">
+                <img src="global/img/logo.png" />
+            </a>
+        </div>
+
+        <div id="nav">
+            <ul class="apps-tabs">
+
+                <li class="tabs-item" id="home">
+                    <a href="javascript:void(0);">
+                        <span class="app-title">Inicio</span>
+                    </a></li>
+
+                <li class="tabs-item" id="matriz-app">
+                    <a href="javascript:void(0);">
+                        <span class="app-title">Matriz de Consumo</span>
+                    </a></li>
+
+                <li class="tabs-item" id="historicos-app">
+                    <a href="javascript:void(0);">
+                        <span class="app-title">Consumos Hist&oacute;ricos</span>
+                    </a></li>
+
+                <li class="tabs-item" id="censo-app">
+                    <a href="javascript:void(0);">
+                        <span class="app-title">Censo de Carga</span>
+                    </a></li>
+
+                <li class="tabs-item" id="calculo-app">
+                    <a href="javascript:void(0);">
+                        <span class="app-title">C&aacute;lculo de Condensadores</span>
+                    </a></li>
+
+                <li class="tabs-item" id="factura-app">
+                    <a href="javascript:void(0);">
+                        <span class="app-title">Factura Digital</span>
+                    </a></li>
+
+                <li class="tabs-item" id="logout">
+                    <a href="javascript:void(0);">
+                        <span class="app-title">Cerrar Sesion</span>
+                    </a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- end sidebar section -->
+
+    <!-- begin main section -->
+    <div id="main">
+
+        <div id="header">
+            <p id="alertas">mensajes informativos, alertas, advertencias</p>
+            <span id="alert-icon"></span>
+        </div>
+
+        <div id="canvas" class="info">
+            <!-- canvas -->
+        </div>
+
+    </div>
+    <!-- end main section -->
+
+    <!-- feedback -->
+    <!--<div id="sugerencias-btn" class="position">
+        <a href="javascript:void(0);">
+            <img src="global/img/sugerencias.png" />
+        </a>
+    </div>-->
+
+    <!-- button show/hide panel apps -->
+    <!--<a href="javascript:void(0);" id="switch-panel"></a>-->
+
+    <!-- begin footer section -->
+    <div id="footer-wrapper" class="bordes3">
+        <div id="footer">
+
+            <a href="javascript:void(0);" id="ligera"></a>
+            <a href="javascript:void(0);" id="help"></a>
+
+            <div id="img-right">
+                <img src="global/img/veritas.png" id="veritas" />
+                <img src="global/img/verify.png" id="verisign" />
+            </div>
+
+        </div>
+    </div>
+    <!-- end footer section -->
+
+</div>
+
+<br />
+
+<div id="sessionTimeoutWarning" style="display: none"></div>
+
+<div id="dialog-overlay"></div>
+<div id="dialog-box">
+    <div class="dialog-content">
+        <div id="dialog-message"></div>
+        <a href="javascript:void(0);" class="button">Close</a>
+    </div>
+</div>
+
+</body>
+</html>

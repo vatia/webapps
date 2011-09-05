@@ -1,0 +1,101 @@
+<div class="wrapper">
+
+    <div id="title-box">
+        <div class="bordes3 title sombras1">
+            datos de la cuenta
+        </div>
+    </div>
+
+    <!--<div id="titulo-nobox">
+        datos de la cuenta
+    </div>-->
+
+    <div class="no-box">
+        <br clear="all" />
+        <form action="{{baseurl}}login" method="post" id="nombre" style="padding:0">
+            <label id="out" style="float:left">Cliente :</label>
+            <fieldset id="signin-idcte">
+                <input name="cliente" type="text" style="float: left;">
+            </fieldset>
+            <fieldset id="signin-captcha"></fieldset>
+        </form>
+    </div>
+
+    <br clear="all" />
+
+    <div class="box-slide cuenta">
+        <ul id="slides">
+
+            <li id="left-btn" class="boton"><a href="javascript:void(0);"></a></li>
+
+            <li id="num-chek" >
+                <ul id="item-1" class="listado">
+
+                    <li class="list-item" id="list-1">
+                        <a href="javascript:void(0);" class="options">1039699</a>
+                    </li>
+
+                    <li class="separator">-</li>
+
+                    <li class="list-item" id="list-2">
+                        <a href="javascript:void(0);" class="options">1039699</a>
+                    </li>
+
+                    <li class="separator">-</li>
+
+                    <li class="list-item" id="list-3">
+                        <a href="javascript:void(0);" class="options">1039699</a>
+                    </li>
+
+                    <li class="separator">-</li>
+
+                    <li class="list-item" id="list-3">
+                        <a href="javascript:void(0);" class="options">1039699</a>
+                    </li>
+
+                    <li class="separator">-</li>
+
+                    <li class="list-item" id="list-3">
+                        <a href="javascript:void(0);" class="options">1039699</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li id="right-btn" class="boton"><a href="javascript:void(0);"></a></li>
+
+        </ul>
+    </div>
+
+    <div class="box tooltip" style="background: url(global/img/tooltip-big.png) 0 0 no-repeat;">
+        <form action="{{baseurl}}login" method="post" id="login-form" style="padding:0" class="short1">
+            <input type="hidden" name="nombrecliente" >
+
+            <fieldset id="nombrecliente">
+                <label>Nombre :</label>
+                <input name="nombrecliente" type="text" />
+            </fieldset>
+
+            <fieldset id="direccion">
+                <label>Direcci&oacute;n :</label>
+                <input name="direccion" type="text" />
+            </fieldset>
+
+            <fieldset id="tel" >
+                <label>Tel&eacute;fono :</label>
+                <input name="tel" type="text" />
+            </fieldset>
+
+            <fieldset id="nit">
+                <label>Nit :</label>
+                <input name="nit" type="text" />
+            </fieldset>
+
+            <fieldset id="mercado" >
+                <label>Mercado :</label>
+                <input name="mercado" type="text" />
+            </fieldset>
+
+        </form>
+    </div>
+
+</div>

@@ -1,0 +1,1318 @@
+@charset "utf-8";
+
+@import "reset.min.css";
+
+* {
+    font: 12px/1.5 Arial, Helvetica, Tahoma, Verdana, Geneva, sans-serif !important;
+    color: #666;
+    text-shadow: #fff 0 1px 0;
+    text-align: justify;
+    vertical-align: middle;
+    /* text-shadow: #d3d3d3 1px 1px 1px; */
+    /* text-shadow: rgba(0, 0, 0, 0.292969) -1px -1px 1px */
+}
+
+body {
+    background-image: url(../img/bg-pattern.png);
+    /* padding: 20px 0; */
+    /* overflow: hidden; */
+}
+
+h2 {
+    font-size: 21px;
+    padding-bottom: 25px;
+    margin-top: 45px;
+    border-bottom: 1px solid #cec5c0;
+}
+
+h3 {
+    font-size: 30px;
+    line-height: 33px;
+}
+
+h4 {
+    color: #2f231e;
+    line-height: 20px;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+p {
+    font-size: 12px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #363;
+}
+
+#container {
+    width: 1120px;
+    margin: 0px auto;
+    margin-top: 20px;
+    text-align: left;
+    /* position: relative; */
+    /* left: 50%; */
+    /* margin-left: -475px; */
+    overflow: hidden;
+    background: #fff;
+    border: 1px double #777a6b;
+}
+
+#header {
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+    background: #e0e6c6;
+    display: none;
+    /* z-index: 1000; */
+    position: absolute;
+    left: 183px;
+    width: 100%;
+}
+
+#sidebar {
+    width: 182px;
+    float: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    border-right: 1px solid #ccc;
+    background: #e0e6c6;
+    -webkit-border-top-left-radius: 15px;
+    -moz-border-radius-topleft: 15px;
+    border-top-left-radius: 15px;
+}
+
+.position {
+    position: absolute;
+}
+
+.center {
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.clearfix {
+    clear: both;
+}
+
+.info {
+    /* background: #fff; */
+    position: absolute;
+    /* left: 30px; */
+    /* width: 810px; */
+    margin-left: 184px;
+    height: 528px;
+    padding-right: 28px;
+    overflow: auto;
+    /* -webkit-border-top-right-radius: 15px;
+    -moz-border-radius-topright: 15px;
+    border-top-right-radius: 15px; */
+}
+
+.single h3 {
+    font-size: 24px;
+}
+
+#logo img {
+    margin: 28px 0 0 63px;
+}
+
+div#logo {
+    height: 140px;
+}
+
+#switch-panel {
+    position: absolute;
+    top: 278px;
+    left: 165px;
+}
+
+#alertas {
+    text-transform: uppercase;
+    font-weight: bold;
+    padding-top: 20px;
+    margin-left: 183px;
+    height: 40px;
+}
+
+form {
+    width: 395px;
+    float: left;
+}
+
+.wrapper {
+    overflow: hidden;
+    padding-top: 20px;
+    width: 936px;
+}
+
+.box {
+    background: #eef1e0;
+    width: 540px;
+    margin: 0 auto;
+    padding: 0 20px;
+    overflow: hidden;
+}
+
+.no-box {
+    padding: 0 20px;
+    overflow: hidden;
+    width: 240px;
+    margin: 0 auto;
+    font-weigth: bold;
+    text-transform: uppercase;
+}
+
+.top-bar {
+    /* overflow: hidden; */
+    width: 560px;
+    padding: 10px;
+    /* text-align: center; */
+    text-transform: uppercase;
+    /* border-bottom: none; */
+    background: #e0e6c6;
+    margin: 0 auto;
+    /* clear: both; */
+}
+
+.top-bar p {
+    font-weight: bold;
+}
+
+#data-container {
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 20px  0 20px 40px;
+    width: 700px;
+}
+
+#data-container div.top-bar {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#data-container #box-consumos div.box {
+    width: 290px;
+}
+
+#data-container #box-consumos div.top-bar {
+    width: 310px;
+}
+
+#data-container #box-actuales #box-actual div.box {
+    width: 190px;
+}
+
+#data-container #box-actuales #box-actual div.top-bar {
+    width: 210px;
+}
+
+#data-container #box-actuales #box-promedio div.box {
+    width: 190px;
+}
+
+#data-container #box-actuales #box-promedio div.top-bar {
+    width: 210px;
+}
+
+#box-consumos {
+    float: left;
+    margin-right: 30px;
+}
+
+#box-actuales {
+    float: left;
+    border-left: 1px solid #ccc;
+    padding-left: 30px;
+}
+
+
+.no-bar {
+    width: 300px;
+}
+
+#title-container {
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.title {
+    width: 215px;
+    padding: 20px 20px;
+    background: #d9dbd1;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 0 auto;
+    /* z-index: 1000; */
+}
+
+#titulo-nobox {
+    text-transform: uppercase;
+    margin: 0 auto;
+    text-align: center;
+    font-weight: bold;
+    font-size: 110%;
+}
+
+#box3, #box4 {
+    margin: 0 auto;
+    position: relative;
+    width: 700px;
+    margin-left: 50px;
+}
+
+.grilla {
+    display: none;
+    margin: 0 auto;
+    position: relative;
+    width: 700px;
+    margin-left: 50px;
+}
+
+.gridtop-bar {
+    width: 820px;
+}
+
+.datagridbox {
+    width: 816px;
+    /* height: 200px; */
+    overflow-x: scroll;
+    margin: 0;
+    padding: 12px;
+}
+
+
+/** apps navigation **/
+
+/* #nav ul.apps-tabs {
+    z-index: 1000;
+}*/
+
+#nav li.tabs-item {
+    position: relative;
+    z-index: 1000;
+    /* border-bottom: 1px dotted #ccc; */
+}
+
+#nav li.tabs-item a {
+    display: block;
+    height: 78px;
+    color: #000;
+    line-height: 20px;
+    /* padding: 2px 0; */
+    vertical-align: middle;
+    position: relative;
+}
+
+#nav li.tabs-item a:hover {
+    text-decoration: none;
+    color: #fff;
+    /* width: 182px; */
+}
+
+#nav li.tabs-item a span {
+    position: absolute;
+    top: 18px;
+    left: 87px;
+    display: block;
+    width: 75px;
+}
+
+#nav li.tabs-item:hover a span,
+#nav li.tabs-item.selected a span {
+    color: #fff;
+}
+
+#nav li.tabs-item {
+    width: 210px;
+}
+
+#nav ul.apps-tabs li img {
+    background: none repeat scroll 0 0 #fff;
+    float: left;
+    margin-right: 10px;
+}
+
+
+.app-title {
+    vertical-align: middle;
+}
+
+
+/** apps buttons **/
+
+#home a {
+    /* background: url(../img/vatia-sprites-all.png) 0 0 no-repeat; */
+}
+
+#home a:hover,
+.selected#matriz-app a {
+    /* background-position: 0 -78px !important; */
+}
+
+#home a:hover {
+    width: 182px;
+}
+
+.selected#home a:hover {
+    width: 210px;
+}
+
+
+#logout a {
+    /* background: url(../img/vatia-sprites-all.png) 0 0 no-repeat; */
+}
+
+#logout a:hover,
+.selected#matriz-app a {
+    /* background-position: 0 -78px !important; */
+}
+
+#logout a:hover {
+    width: 182px;
+}
+
+.selected#logout a:hover {
+    width: 210px;
+}
+
+
+#matriz-app a {
+    background: url(../img/vatia-sprites-all.png) 0 0 no-repeat;
+}
+
+#matriz-app a:hover,
+.selected#matriz-app a {
+    background-position: 0 -78px !important;
+}
+
+#matriz-app a:hover {
+    width: 182px;
+}
+
+.selected#matriz-app a:hover {
+    width: 210px;
+}
+
+
+#historicos-app a {
+    background: url(../img/vatia-sprites-all.png) 0 -156px no-repeat;
+}
+
+#historicos-app a:hover,
+.selected#historicos-app a {
+    background-position: 0 -234px !important;
+}
+
+#historicos-app a:hover {
+    width: 182px;
+}
+
+.selected#historicos-app a:hover {
+    width: 210px;
+}
+
+
+#censo-app a {
+    background: url(../img/vatia-sprites-all.png) 0 -312px no-repeat;
+    /* opacity: 0.2;
+    filter: alpha(opacity=20); */
+    cursor: default;
+}
+
+#censo-app a:hover,
+.selected#censo-app a {
+    background-position: 0 -390px !important;
+    /* opacity: 0.2;
+    filter: alpha(opacity=20); */
+    cursor: default;
+}
+
+#censo-app a:hover {
+    width: 182px;
+}
+
+.selected#censo-app a:hover {
+    width: 210px;
+}
+
+
+#calculo-app a {
+    background: url(../img/vatia-sprites-all.png) 0 -468px no-repeat;
+    /* opacity: 0.2;
+    filter: alpha(opacity=20); */
+    cursor: default;
+}
+
+#calculo-app a:hover,
+.selected#calculo-app a {
+    background-position: 0 -547px !important;
+    /* opacity: 0.2;
+    filter: alpha(opacity=20); */
+    cursor: default;
+}
+
+#calculo-app a:hover {
+    width: 182px;
+}
+
+.selected#calculo-app a:hover {
+    width: 210px;
+}
+
+
+#factura-app a {
+    background: url(../img/vatia-sprites-all.png) 0 -624px no-repeat;
+    /* opacity: 0.2;
+    filter: alpha(opacity=20); */
+    cursor: default;
+}
+
+#factura-app a:hover,
+.selected#factura-app a {
+    background-position: 0 -702px !important;
+    /* opacity: 0.2;
+    filter: alpha(opacity=20); */
+    cursor: default;
+}
+
+#factura-app a:hover {
+    width: 182px;
+}
+
+.selected#factura-app a:hover {
+    width: 210px;
+}
+
+
+
+#action-btns {
+    overflow: hidden;
+    width: 100px;
+    margin: 0 auto;
+}
+
+#items li {
+    float: left;
+    list-style-type: none;
+    margin: 0 6px;
+}
+
+#items li.action-item a {
+    display: block;
+    line-height: 20px;
+    padding: 2px 0;
+    position: relative;
+    /* height: 32px;
+    width: 33px */
+}
+
+#action-btns li.action-item a {
+    display: block;
+    height: 28px;
+    vertical-align: middle;
+    position: relative;
+}
+
+#pdf a {
+    background: url(../img/vatia-sprites-all.png) 0 -1452px no-repeat;
+    width: 100px;
+    height: 26px;
+}
+
+#pdf a:hover {
+    background-position: -102px -1452px !important;
+}
+
+#mail a {
+    background: url(../img/vatia-sprites-all.png) 0 -1484px no-repeat;
+    width: 100px;
+    height: 26px;
+}
+
+#mail a:hover {
+    background-position: -102px -1484px !important;
+}
+
+#print a {
+    background: url(../img/vatia-sprites-all.png) 0 -1516px no-repeat;
+    width: 100px;
+    height: 26px;
+}
+
+#print a:hover {
+    background-position: -102px -1516px !important;
+}
+
+#login-btn {
+    float: right;
+}
+
+.registro input[type=submit] {
+    text-indent: -9999px;
+    background: url(../img/vatia-sprites-all.png) 0 -1354px no-repeat;
+    width: 98px;
+    height: 30px;
+    border: 0;
+}
+
+.registro input[type=submit]:hover {
+    background-position: -101px -1354px !important;
+}
+
+.login input[type=submit] {
+    text-indent: -9999px;
+    background: url(../img/vatia-sprites-all.png) 0 -1420px no-repeat;
+    width: 98px;
+    height: 30px;
+    border: 0;
+}
+
+.login input[type=submit]:hover {
+    background-position: -101px -1420px !important;
+}
+
+#add a {
+    display: block;
+}
+
+#add a {
+    background: url(../img/vatia-sprites-all.png) 0 -2298px no-repeat;
+    width: 29px;
+    height: 31px;
+    border: 0;
+}
+
+#add a:hover {
+    background-position: -29px -2298px !important;
+}
+
+#user-btns {
+    overflow: hidden;
+    width: 520px;
+    margin: 0 auto;
+}
+
+#items li {
+    float: left;
+    list-style-type: none;
+    margin: 6px;
+}
+
+#items li.user-item a {
+    display: block;
+    line-height: 20px;
+    padding: 2px 0;
+    position: relative;
+}
+
+#user-btns li.user-item a {
+    display: block;
+    height: 28px;
+    vertical-align: middle;
+    position: relative;
+}
+
+#nav ul.items li img {
+    background: none repeat scroll 0 0 #ffffff;
+    float: left;
+}
+
+#new a {
+    background: url(../img/vatia-sprites-all.png) 0 -1612px no-repeat;
+    width: 105px;
+}
+
+#new a:hover {
+    background-position: -105px -1612px !important;
+}
+
+#change a {
+    background: url(../img/vatia-sprites-all.png) 0 -1708px no-repeat;
+    width: 147px;
+}
+
+#change a:hover {
+    background-position: -149px -1708px !important;
+}
+
+#erase a {
+    background: url(../img/vatia-sprites-all.png) 0 -1741px no-repeat;
+    width: 108px;
+}
+
+#erase a:hover {
+    background-position: -109px -1741px !important;
+}
+
+#gen a {
+    background: url(../img/vatia-sprites-all.png) 0 -1547px no-repeat;
+    width: 105px;
+}
+
+#gen a:hover {
+    background-position: -111px -1547px !important;
+}
+
+.salvar input[type=submit] {
+    text-indent: -9999px;
+    background: url(../img/vatia-sprites-all.png) 0 -1645px no-repeat;
+    width: 102px;
+    height: 30px;
+    border: 0;
+}
+
+.salvar input[type=submit]:hover {
+    background-position: -103px -1645px !important;
+}
+
+.enviar input[type=submit] {
+    text-indent: -9999px;
+    background: url(../img/vatia-sprites-all.png) 0 -1388px no-repeat;
+    width: 102px;
+    height: 30px;
+    border: 0;
+}
+
+.enviar input[type=submit]:hover {
+    background-position: -103px -1388px !important;
+}
+
+div#nivel {
+    background: url(../img/progress-bar-bg.png) repeat-x #000;
+    width: 220px;
+    height: 9px;
+}
+
+#ciclos-container {
+    /* width: 600px; */
+    /* overflow: hidden; */
+    padding: 20px 20px;
+}
+
+div#slider-range {
+    /* background: url(../img/progress-bar-bg.png) repeat-x #000; */
+    width: 540px;
+    /* height: 40px; */
+    /* margin: 0 auto; */
+    /* padding-top: 40px; */
+}
+
+div#date-slider-range {
+    /* background: url(../img/progress-bar-bg.png) repeat-x #000; */
+    width: 540px;
+    height: 40px;
+    /* margin: 0 auto; */
+    padding-top: 40px;
+}
+
+div#graph-container {
+    width: 650px;
+    height: 220px;
+    margin: 0 auto;
+}
+
+.box-slide {
+    /* clear: both; */
+    overflow: hidden;
+    width: 800px;
+    margin: 20px auto;
+    /* position: relative; */
+    padding-left: 120px;
+}
+
+.box-slide input[type="checkbox"] {
+    margin: 0 60% 0 40%;
+}
+
+div.cuenta {
+    width: 500px;
+    margin: 20px auto;
+    padding-left: 50px;
+}
+
+#slides li {
+    float: left;
+    list-style-type: none;
+    margin: 0 6px;
+}
+
+rigth-btn#slides li {
+    float: right;
+    list-style-type: none;
+    margin-left: -30px;
+}
+
+#slides li.boton a {
+    display: block;
+    line-height: 20px;
+    padding: 2px 0;
+    position: relative;
+    height: 32px;
+    width: 33px;
+}
+
+#left-btn a {
+    background: url(../img/vatia-sprites-all.png) 0 -1892px no-repeat;
+    width: 105px;
+}
+
+#left-btn a:hover {
+    background-position: -36px -1892px !important;
+}
+
+#right-btn a {
+    background: url(../img/vatia-sprites-all.png) -72px -1892px no-repeat;
+    width: 105px;
+}
+
+#right-btn a:hover {
+    background-position: -108px -1892px !important;
+}
+
+a.options {
+    font-size: 180% !important;
+    letter-spacing: 0px;
+}
+
+a.options:hover, li#todos a:hover {
+    text-decoration: none;
+    color: #6c7a23;
+}
+
+li.list-item {
+    width: 80px;
+}
+
+#slides li.separator {
+    vertical-align: bottom;
+    padding-top: 10px;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+li#num-chek  {
+    height: 48px;
+    overflow: hidden;
+}
+
+.cuenta li#num-chek {
+    height: 35px;
+    overflow: hidden;
+}
+
+.cuenta li#no-cb {
+    height: 20px;
+    overflow: hidden;
+}
+
+ul.listado {
+    width: 580px;
+    display: inline-block;
+}
+
+.cuenta ul.listado {
+    width: 350px;
+}
+
+li#todos {
+    width: 60px;
+    margin-top: 6px;
+    overflow: hidden;
+    padding-left: 15px;
+    border-left: 1px #959595 solid;
+    margin-left: -15px;
+}
+
+li#todos a {
+    font-size: 130%;
+    letter-spacing: -1px;
+    font-weight: bold;
+}
+
+li#todos input[type="checkbox"] {
+    margin: 0 60% 0 40%;
+    text-align: center;
+}
+
+.pags {
+    overflow: hidden;
+    width: 600px;
+    margin: 30px auto;
+    position: relative;
+    clear: both;
+    padding: 0 0 0 100px;
+}
+
+.navigation li {
+    float: left;
+    list-style-type: none;
+    margin: 0 6px;
+}
+
+.navigation li.nav-item a {
+    display: block;
+    line-height: 20px;
+    padding: 2px 0;
+    position: relative;
+    height: 32px;
+    width: 33px;
+}
+
+#texto a,
+#texto-re a,
+#texto-pe a,
+#texto-fp a {
+    width: 90px;
+}
+
+li.nav-item  {
+    overflow: hidden;
+    float: left;
+    padding-top: 6px;
+}
+
+li.top {
+    padding-top: 0;
+}
+
+.inline {
+    display: inline-block;
+}
+
+ul#export-items li,
+ul#export-items-re li,
+ul#export-items-pe li,
+ul#export-items-fp li {
+    float: left;
+}
+
+#excel a,
+#excel-re a,
+#excel-pe a,
+#excel-fp a {
+    background: url(../img/vatia-sprites-all.png) 0 -1581px no-repeat;
+    width: 86px;
+    height: 26px;
+}
+
+#excel a:hover,
+#excel-re a:hover,
+#excel-pe a:hover,
+#excel-fp a:hover {
+    background-position: -88px -1581px !important;
+}
+
+#grafico a,
+#grafico-re a,
+#grafico-pe a,
+#grafico-fp a {
+    background: url(../img/vatia-sprites-all.png) 0 -1677px no-repeat;
+    width: 94px;
+    height: 26px;
+}
+
+#grafico a:hover,
+#grafico-re a:hover,
+#grafico-pe a:hover,
+#grafico-fp a:hover {
+    background-position: -97px -1677px !important;
+}
+
+#nav-btns-re li a,
+#nav-btns li a,
+#nav-btns-pe li a,
+#nav-btns-fp li a, {
+    width: 18px;
+    height: 17px;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+}
+
+#nav-btns li a span,
+#nav-btns-re li a span,
+#nav-btns-pe li a span,
+#nav-btns-fp li a span {
+    position: absolute;
+    top: -1px;
+    left: 5px;
+    color: #fff;
+}
+
+#nav-btns-re li a:hover,
+#nav-btns li a:hover,
+#nav-btns-pe li a:hover,
+#nav-btns-fp li a:hover {
+    font-weight: bold;
+}
+
+.navigation-list-re li,
+.navigation-list li,
+.navigation-list-pe li,
+.navigation-list-fp li {
+}
+
+.navigation li.nav-item a {
+    display: block;
+    padding: 2px 0;
+    height: 17px;
+    width: 20px;
+}
+
+#prev a,
+#prev-re a,
+#prev-pe a,
+#prev-fp a {
+    background: url(../img/vatia-sprites-all.png) 0 -1871px no-repeat;
+    vertical-align: top;
+}
+
+#prev a:hover,
+#prev-re a:hover,
+#prev-pe a:hover,
+#prev-fp a:hover {
+    background-position: -101px -1871px !important;
+}
+
+#first a,
+#first-re a,
+#first-pe a,
+#first-fp a {
+    background: url(../img/vatia-sprites-all.png) -20px -1871px no-repeat;
+}
+
+#first a:hover,
+#first-re a:hover,
+#first-pe a:hover,
+#first-fp a:hover {
+    background-position: -121px -1871px !important;
+}
+
+.empty a,
+.empty-re a,
+.empty-pe a,
+.empty-fp a {
+    background: url(../img/vatia-sprites-all.png) -40px -1871px no-repeat;
+}
+
+.empty a:hover,
+.empty-re a:hover,
+.empty-pe a:hover,
+.empty-fp a:hover {
+    background-position: -141px -1871px !important;
+}
+
+#last a,
+#last-re a,
+#last-pe a,
+#last-fp a {
+    background: url(../img/vatia-sprites-all.png) -60px -1871px no-repeat;
+}
+
+#last a:hover,
+#last-re a:hover,
+#last-pe a:hover,
+#last-fp a:hover {
+    background-position: -161px -1871px !important;
+}
+
+#next a,
+#next-re a,
+#next-pe a,
+#next-fp
+    background: url(../img/vatia-sprites-all.png) -80px -1871px no-repeat;
+}
+
+#next a:hover,
+#next-re a:hover,
+#next-pe a:hover,
+#next-fp a:hover {
+    background-position: -181px -1871px !important;
+}
+
+div.on-off {
+    width: 28px;
+    position: absolute;
+    left: -30px;
+    top: 100px;
+}
+
+div.on-off input[type=checkbox] {
+    position: absolute;
+    right: 9000px;
+}
+
+.switch {
+    display: block;
+    background: url(../img/on-off-sprite.png) 0 0 no-repeat;
+    height: 49px;
+    width: 26px;
+    cursor: pointer;
+}
+
+label.switch.checked {
+    background: url(../img/on-off-sprite.png) -26px 0 no-repeat;
+}
+
+#img-right {
+    float: right;
+}
+
+a#help {
+    margin-left: 64px;
+}
+
+/** footer section **/
+
+#footer-wrapper {
+    height: 80px;
+    clear: both;
+    border-top: 1px solid #ccc;
+    padding: 0 15px;
+    /* overflow: hidden; */
+    background: #e0e6c6;
+}
+
+#footer {
+    margin-top: 10px;
+}
+
+/** rounded borders **/
+
+.bordes1 {
+    border: 2px solid #ccc;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+.bordes2 {
+    border: 1px solid #ccc;
+    -webkit-border-radius: 15px 15px 0 0;
+    -moz-border-radius: 15px 15px 0 0;
+    border-radius: 15px 15px 0 0;
+}
+
+.bordes3 {
+    border: 1px solid #ccc;
+    -webkit-border-radius: 0 0 15px 15px;
+    -moz-border-radius: 0 0 15px 15px;
+    border-radius: 0 0 15px 15px;
+}
+
+.bordes4 {
+    border: 1px solid #ccc;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.bordes1alt {
+    border: 1px solid #ccc;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.bordes2alt {
+    border: 1px solid #ccc;
+    -webkit-border-radius: 10px 10px 0 0;
+    -moz-border-radius: 10px 10px 0 0;
+    border-radius: 10px 10px 0 0;
+}
+
+.bordes3alt {
+    border: 1px solid #ccc;
+    -webkit-border-radius: 0 0 10px 10px;
+    -moz-border-radius: 0 0 10px 10px;
+    border-radius: 0 0 10px 10px;
+}
+
+/** shadow borders **/
+
+.sombras1 {
+    -webkit-box-shadow: 0 0 5px 5px #acacac;
+    -moz-box-shadow: 0 0 5px 5px #acacac;
+    box-shadow: 0 0 5px 5px #acacac;
+}
+
+.sombras1alt {
+    /* -webkit-box-shadow: 0 0 3px 3px #acacac;
+    -moz-box-shadow: 0 0 3px 3px #acacac;
+    box-shadow: 0 0 3px 3px #acacac; */
+}
+
+/** tooltips **/
+
+.tooltip {
+    background: url(../img/tooltip2.png) 0 0 no-repeat transparent;
+    width: 180px;
+    height: 63px;
+    display: none;
+    padding: 20px ;
+    text-align: center;
+    padding-top: 15px;
+    vertical-align: text-bottom;
+}
+
+.tooltip-big, .tooltip-big form {
+    background: none;
+    padding-top: 20px;
+    width: 330px;
+}
+
+div.tooltip-big {
+    background: url(../img/tooltip-big.png) 0 0 no-repeat;
+}
+
+
+/** show/hide button **/
+
+a#switch-panel {
+    display: block;
+    height: 32px;
+    width: 33px;
+}
+
+a#switch-panel {
+    background: url(../img/vatia-sprites-all.png) 0 -1892px no-repeat;
+    width: 32px;
+}
+
+a#switch-panel:hover {
+    background-position: -143px -1892px !important;
+}
+
+a#switch-panel.off  {
+    background: url(../img/vatia-sprites-all.png) -71px -1892px no-repeat;
+    width: 34px;
+}
+
+a#switch-panel.off:hover {
+    background-position: -176px -1892px !important;
+}
+
+/** ligera button **/
+
+#ligera {
+    background: url(../img/ligera.png) 0 0 no-repeat;
+    display: inline-block;
+    margin-left: 30px;
+    width: 93px;
+    height: 44px;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+}
+
+#ligera:hover {
+    opacity: 100;
+    filter: alpha(opacity=100);
+}
+
+
+/** help button **/
+
+a#help {
+    background: url(../img/vatia-sprites-all.png) -76px -1833px no-repeat;
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+}
+
+a#help:hover {
+    background-position: -41px -1833px !important;
+    opacity: 100;
+    filter: alpha(opacity=100);
+}
+
+
+/** feedback button **/
+
+#sugerencias-btn {
+    top: 220px;
+    right: 0;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+}
+
+#sugerencias-btn:hover {
+    opacity: 100;
+    filter: alpha(opacity=100);
+}
+
+/* debugger info */
+
+#debug {
+    float: none;
+    display: block;
+    width: 96%;
+    margin: 10px;
+    padding: 10px;
+    border: dashed 1px;
+    border-color: gray;
+}
+
+#csmo-type-container {
+    height: 48px;
+}
+
+#csmo-type-container fieldset {
+    float: left;
+}
+
+#report,
+#report iframe {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.grilla .box th {
+    padding: 4px;
+    text-align: center;
+    text-transform: uppercase;
+    text-weight: bold;
+    border: 1px dotted;
+}
+
+.grilla .box td {
+    padding: 4px;
+    text-align: right;
+    border: 1px dotted;
+}
+
+#data-container #ultimos-consumos th,
+#data-container #csmo-actual th,
+#data-container #csmo-promedio th {
+    padding: 4px;
+    text-align: center;
+    text-transform: uppercase;
+    text-weight: bold;
+    border: 1px dotted;
+}
+
+#data-container #ultimos-consumos td,
+#data-container #csmo-actual td,
+#data-container #csmo-promedio td {
+    padding: 4px;
+    text-align: right;
+    border: 1px dotted;
+}
+
+#factura-web {
+    width: 928px;
+    height: 100%;
+    border: 0;
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
