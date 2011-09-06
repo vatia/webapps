@@ -1,12 +1,10 @@
 <?php
 
-$dbconfig['dev'] = array('192.168.32.146', 'mithra', 'jalvarez', 'v4t14dba',
+$dbconfig['dev'] = array('192.168.200.54', 'mithra', 'jalvarez', 'v4t14dba',
 	'mysql', true, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8');
 
-$dbconfig['prod'] = array('192.168.0.40', 'mithra', 'mithra', 'atenas',
+$dbconfig['prod'] = array('192.168.0.158', 'mithra', 'mithra', 'atenas',
 	'mysql', true, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8');
-
-$dbconfig['slave'] = array('127.0.0.1', '192.168.0.158', '192.168.32.146');
 
 // belongs_to, should_belong_to, has_many, can_have_many, should_have_many
 
