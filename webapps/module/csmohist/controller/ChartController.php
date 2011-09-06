@@ -15,6 +15,8 @@ class ChartController extends DooController {
         $fact->cliente_id = $this->params['id_cliente'];
         $facts = $this->db()->find($fact);
 
+        Doo::logger()->log(Doo::db()->showSQL());
+
         foreach ($facts as $fact) {
             if ((intval($fact->ciclo) >= intval($this->params['ciclo_ini'])) &&
                 (intval($fact->ciclo) <= intval($this->params['ciclo_fin']))) {

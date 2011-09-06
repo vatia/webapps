@@ -13,13 +13,13 @@ class FrontController extends DooController {
                 $cte = Doo::session()->get('cte');
 
                 if (is_object($cte) && $cte instanceof M02Clientes) {
-                    $data['id_cliente'] = $cte->id_cliente;
                     $data['nit_cedula'] = substr($cte->nit_cedula, 0, 9);
                     $data['id_interno'] = $cte->id_interno;
-                    $data['codigo_sic'] = $cte->codigo_sic;
                 }
                 $data['usrtype'] = Doo::session()->get('usrtype');
                 $data['baseurl'] = Doo::conf()->APP_URL;
+
+                //echo '<pre>'.json_encode(Doo::session()->getAll()).'</pre>';
 
                 $this->view()->render('ppal', $data);
 

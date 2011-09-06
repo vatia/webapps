@@ -16,37 +16,22 @@ class FrontController extends DooController {
                 $data['baseurl'] = Doo::conf()->APP_URL;
 
                 // TODO: rango ciclos inicial
-                $data['ciclo_ini'] = '201104';
-                $data['ciclo_fin'] = '201106';
+                $data['ciclo_ini'] = '201101';
+                $data['ciclo_fin'] = '201108';
 
                 $data['graph'] = 'global/img/graph-line.png';
 
                 $data['usrtype'] = Doo::session()->get('usrtype');
 
-                if ($data['usrtype'] == 'corp') {
-
-                    $data['id_grupo'] = Doo::session()->get('id_grupo');
-
-                    $cte = new M02Clientes();
-                    $cte->m02gcli_id = $data['id_grupo'];
-
-                    $data['clientes'] = $this->db()->find($cte,
-                        array('asc' => 'id_cliente'));
-
-                    /*foreach ($clientes as $cte) {
-                        if ($cte->m02gcli_id === $data['id_grupo']) {
-                            array_push($data['clientes'], $cte);
-                        }
-                    }*/
-                    if (is_array($data['clientes'])) {
-
-                        Doo::session()->cte = $data['clientes'][0];
-
-                        Doo::session()->id_cliente =
-                            $data['clientes'][0]->id_cliente;
-                    }
+            	if ($data['usrtype'] == 'corp') {
+                    $data['clientes'] = Doo::session()->get('clientes');
+                    //Doo::session()->cte = $data['clientes'][0];
+                } else {
+                	$data['clientes'] = null;
                 }
-                $data['id_cliente'] = Doo::session()->get('id_cliente');
+                $data['id_cliente'] = Doo::session()->get('cte')->id_cliente;
+
+                //echo '<pre>'.json_encode(Doo::session()->getAll()).'</pre>';
 
                 $this->view()->render('csmohist', $data);
 

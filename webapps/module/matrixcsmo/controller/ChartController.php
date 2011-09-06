@@ -4,10 +4,10 @@ class ChartController extends DooController {
 
     public function graph() {
 
-        $jpgraph_dir = Doo::conf()->SITE_PATH . 'webapps/libraries/jpgraph/';
+        /*$jpgraph_dir = Doo::conf()->SITE_PATH . 'webapps/libraries/jpgraph/';
 
         require_once $jpgraph_dir . 'jpgraph.php';
-        require_once $jpgraph_dir . 'jpgraph_bar.php';
+        require_once $jpgraph_dir . 'jpgraph_bar.php';*/
 
         $title = $this->params['id_cliente'] . ' - ';
 
@@ -30,7 +30,7 @@ class ChartController extends DooController {
                 break;
 
             default:
-                return array('/error', 404);
+                return array(Doo::conf()->APP_URL . 'error', 404);
         }
 
         $datay1 = array(20, 15, 23, 15);

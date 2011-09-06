@@ -2,65 +2,23 @@
 
 class UserController extends DooController {
 
-    /**
-     * Registro de nuevo usuario
-     */
     public function register() {
-
-        if ($this->isAjax()) {
-            // TODO: registrar usuario en base de datos
-        } else {
-            $this->view()->render('signup');
-        }
-
+    	// TODO: registrar usuario en base de datos
     }
 
-    /**
-     * Correo de confirmacion
-     */
     public function sendmail() {
-
+    	// TODO: enviar correo de confirmacion
     }
 
-    /**
-     * Link de confirmacion
-     */
     public function confirm() {
-
+    	// TODO: confirmar usuario nuevo
     }
 
-    /**
-     * Genera clave
-     */
-    public function pin() {
-
-    }
-
-    /**
-     *
-     */
-    public function delete() {
-
-    }
-
-    /**
-     *
-     */
     public function modify() {
-
+    	// TODO: modificar usuario
     }
 
-    /**
-     *
-     */
-    public function changePin() {
-
-    }
-
-    /**
-     *
-     */
-    public function lostPin() {
-
+    public function delete() {
+    	// TODO: eliminar usuario
     }
 }

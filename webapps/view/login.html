@@ -55,7 +55,7 @@ $(document).ready(function() {
         $('#login-form input[name=usertype]').val('corp');
     });
     $('#types-bar #cial').click(function() {
-        // $('#signin-id').hide();
+        $('#signin-id').hide();
         selectType($(this));
         $('#login-form input[name=usertype]').val('cial');
     });
@@ -151,8 +151,7 @@ function messagebox(message) {
             <li><a id="cial" href="javascript:void(0);"></a><span>Asesor<br>Comercial</span></li>
         </ul>
 
-        <form action="{{baseurl}}login" method="post" id="login-form"
-            accept-charset="utf-8" class="bordes1 sombras1">
+        <form action="{{baseurl}}login" method="post" accept-charset="utf-8" id="login-form" class="bordes1 sombras1">
 
             <input type="hidden" name="usertype" value="">
 

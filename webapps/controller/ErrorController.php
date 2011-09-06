@@ -3,7 +3,7 @@
 class ErrorController extends DooController {
 
     public function index() {
-        echo '<h1>Application Error</h1>';
+        echo '<h1>Error</h1>';
     }
 
     public function exception() {

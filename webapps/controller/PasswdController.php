@@ -2,19 +2,15 @@
 
 class PasswdController extends DooController {
 
-    public function change() {
+    public function pin() {
+    	// TODO: generar clave
+    }
 
-        if (!$this->isAjax()) {
-            $data['baseurl'] = Doo::conf()->APP_URL;
-            $this->view()->render('changepwd', $data, true);
-        }
+	public function change() {
+    	// TODO: cambiar clave
     }
 
     public function lost() {
-
-        if (!$this->isAjax()) {
-            $data['baseurl'] = Doo::conf()->APP_URL;
-            $this->view()->render('lostpwd', $data, true);
-        }
+    	// TODO: recuperar clave olvidada
     }
 }
