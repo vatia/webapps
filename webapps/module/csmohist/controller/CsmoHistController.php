@@ -4,62 +4,75 @@ class CsmoHistController extends DooController {
 
     public function last() {
 
-        $fact = new M05Facturas();
-        $fact->cliente_id = $this->params['id_cliente'];
+    	Doo::loadModel('M02Clientes');
+    	Doo::loadModel('M05Facturas');
 
-        $facturas = $this->db()->find($fact, array('asc' => 'ciclo'));
+        Doo::logger()->beginDbProfile('find_cte', 'csmo_rpt');
+        $cte = self::db()->find('M02Clientes', array(
+        	'where' => 'id_cliente = ?',
+        	'param' => array($this->params['id_cliente']),
+        	'limit' => 1));
+        Doo::logger()->endDbProfile('find_cte');
 
-        $data['facturas'] = array();
+        if (is_object($cte) && ($cte instanceof M02Clientes)) {
+
+        	Doo::logger()->beginDbProfile('find_fact', 'csmo_hist');
+	        $facturas = self::db()->relate('M05Facturas', 'M02Clientes',
+	        	array(
+	        	'where' => 'm02_clientes.id_cliente = ? ' .
+	        	           'AND m05_facturas.factura_tipo_id <> ? '.
+	        	           'AND (m05_facturas.ciclo BETWEEN ? AND ?)',
+	        	'param' => array($cte->id_cliente, 303,
+	        		$this->params['ciclo_ini'], $this->params['ciclo_fin']),
+        		'asc' => 'm05_facturas.ciclo'));
+	        Doo::logger()->endDbProfile('find_fact');
+        }
 
         if (is_array($facturas) && (count($facturas) > 0)) {
-
-            foreach ($facturas as $fact) {
-
-                if ((intval($fact->ciclo) >= intval($this->params['ciclo_ini'])) &&
-                    (intval($fact->ciclo) <= intval($this->params['ciclo_fin']))) {
-
-                    array_push($data['facturas'], $fact);
-                }
-            }
+            $data['facturas'] = $facturas;
+        } else {
+        	$data['facturas'] = array();
         }
         $this->view()->render('lastcsmo', $data);
     }
 
     public function curr() {
-
         $data['factura'] = self::bill($this->params['id_cliente']);
-
         $this->view()->render('currcsmo', $data);
     }
 
     public function avg() {
-
         $data['factura'] = self::bill($this->params['id_cliente']);
-
         $this->view()->render('csmoavg', $data);
     }
 
     private function bill($id_cliente) {
 
-        $fact = new M05Facturas();
-        $fact->cliente_id = $id_cliente;
+    	Doo::loadModel('M02Clientes');
+    	Doo::loadModel('M05Facturas');
 
-        $facturas = $this->db()->find($fact);
-
-        $max_ciclo = 0;
+        Doo::logger()->beginDbProfile('find_cte', 'csmo_rpt');
+        $cte = self::db()->find('M02Clientes', array(
+        	'where' => 'id_cliente = ?',
+        	'param' => array($this->params['id_cliente']),
+        	'limit' => 1));
+        Doo::logger()->endDbProfile('find_cte');
 
         $factura = new M05Facturas();
+        if (is_object($cte) && ($cte instanceof M02Clientes)) {
 
-        if (is_array($facturas) && (count($facturas) > 0)) {
+        	Doo::logger()->beginDbProfile('find_fact', 'csmo_hist');
+	        $facturas = self::db()->relate('M05Facturas', 'M02Clientes',
+	        	array(
+	        	'where' => 'm02_clientes.id_cliente = ? ' .
+	        	           'AND m05_facturas.factura_tipo_id <> ?',
+	        	'param' => array($cte->id_cliente, 303),
+        		'asc' => 'm05_facturas.ciclo'));
+	        Doo::logger()->endDbProfile('find_fact');
 
-            foreach ($facturas as $fact) {
-
-                if ($fact->ciclo > $max_ciclo) {
-
-                    $max_ciclo = $fact->ciclo;
-                    $factura = $fact;
-                }
-            }
+	        if (is_array($facturas) && (count($facturas) > 0)) {
+	        	return $facturas[count($facturas)-1];
+	        }
         }
         return $factura;
     }

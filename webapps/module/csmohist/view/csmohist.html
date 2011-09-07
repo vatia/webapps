@@ -1,3 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Vatia :: Webapps</title>
+
+<base href="{{baseurl}}" target="_self" />
+
+<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+<meta http-equiv="Pragma" content="no-cache">
+
+<link rel="shortcut icon" href="global/favicon.ico" type="image/x-icon" />
+
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/default.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/smoothness/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/dateslider.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/forms.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/signin.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/dialogbox.css" />
+
+<script type="text/javascript" src="global/js/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery-ui.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.tools.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.range-slider.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.date-range-slider.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.idletimer.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.iframe.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.pngfix.js" charset="utf-8"></script>
 
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
@@ -16,20 +44,20 @@ $(document).ready(function() {
 
     function csmo_refresh() {
 
-        $('#graph-container').load('/csmo-hist/graph/' +
+        $('#graph-container').load('{{baseurl}}csmo-hist/graph/' +
             id_cliente + '/' + ciclo_ini + '/' + ciclo_fin);
 
-        $('#ultimos-consumos').load('/csmo-hist/last/' +
+        $('#ultimos-consumos').load('{{baseurl}}csmo-hist/last/' +
                 id_cliente + '/' + ciclo_ini + '/' + ciclo_fin);
 
-        $('#csmo-actual').load('/csmo-hist/curr/' + id_cliente);
-        $('#csmo-promedio').load('/csmo-hist/avg/' + id_cliente);
+        $('#csmo-actual').load('{{baseurl}}csmo-hist/curr/' + id_cliente);
+        $('#csmo-promedio').load('{{baseurl}}csmo-hist/avg/' + id_cliente);
     }
 
     $('#ciclos-container #slider-range').slider({
         range: true,
-        min: 201101,
-        max: 201108,
+        min: {{ciclo_ini_min}},
+        max: {{ciclo_fin_max}},
         step: 1,
         values: [ ciclo_ini, ciclo_fin ],
         slide: function(event, ui) {
@@ -56,10 +84,10 @@ $(document).ready(function() {
 
     $('#action-btns #items #excel').click(function() {
         <!-- if {{usrtype}} !== 'corp' -->
-        var v_url = '/csmo-hist/excel' + '/' +
+        var v_url = '{{baseurl}}csmo-hist/excel' + '/' +
             id_cliente + '/' + ciclo_ini + '/' + ciclo_fin;
         <!-- else -->
-        var v_url = '/csmo-hist/excel' + '/' +
+        var v_url = '{{baseurl}}csmo-hist/excel' + '/' +
             id_grupo + '/' + ciclo_ini + '/' + ciclo_fin;
         <!-- endif -->
         $('#report iframe').src(v_url);
@@ -140,7 +168,7 @@ $(document).ready(function() {
             <br clear="all" />
 
             <div id="box-promedio">
-                <div class="top-bar bordes2alt sombras1alt"><p>promedio</p></div>
+                <div class="top-bar bordes2alt sombras1alt"><p>consumo promedio</p></div>
                 <div class="box bordes3alt sombras1alt">
                     <p id="csmo-promedio"></div>
                 </div>
@@ -164,3 +192,6 @@ $(document).ready(function() {
 <div id="report">
     <iframe src=""></iframe>
 </div>
+
+</body>
+</html>
