@@ -8,11 +8,11 @@ $config['BASE_PATH'] = 'doophp/';
 
 $config['PROTECTED_FOLDER'] = 'webapps/';
 
-$config['SUBFOLDER'] = '/';
+$config['SUBFOLDER'] = '/demo/';
 
 $config['APP_MODE'] = 'prod';
 
-$config['APP_URL'] = 'http://' . $_SERVER['HTTP_HOST'] . $config['SUBFOLDER'];
+$config['APP_URL'] = 'https://' . $_SERVER['HTTP_HOST'] . $config['SUBFOLDER'];
 
 $config['APP_URL_NO_WWW'] = str_replace('www.', '', $config['APP_URL']);
 
@@ -46,7 +46,8 @@ $config['AUTOLOAD'] = array('class', 'libraries', 'model',
     'module/factweb/controller', 'module/factweb/model',
     'module/loadcensus/controller', 'module/loadcensus/model',
     'module/matrixcsmo/controller', 'module/matrixcsmo/model',
-    'module/updinfo/controller', 'module/updinfo/model');
+    'module/updinfo/controller', 'module/updinfo/model'
+);
 
 $config['TEMPLATE_ENGINE'] = 'DooView';
 

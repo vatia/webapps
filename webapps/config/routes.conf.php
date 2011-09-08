@@ -11,6 +11,7 @@ $route['*']['/keepalive'] =  array('FrontController', 'keepalive');
 $route['get']['/login'] = array('LoginController', 'index');
 $route['post']['/login'] = array('LoginController', 'login');
 
+$route['*']['/session/expired'] =  array('LoginController', 'index');
 $route['*']['/login/wrong/:code'] = array('LoginController', 'wrong');
 
 $route['*']['/login/change-passwd'] = array('PasswdController', 'change');
@@ -19,8 +20,6 @@ $route['*']['/login/lost-passwd'] = array('PasswdController', 'lost');
 $route['*']['/signup'] = array('LoginController', 'signup');
 
 $route['*']['/logout'] = array('LoginController', 'logout');
-
-$route['*']['/session/expired'] =  array('LoginController', 'expired');
 
 
 
@@ -78,9 +77,7 @@ $route['*']['/csmo-hist/corp/:id_grupo'] =
 
 $route['*']['/csmo-hist/last/:id_cliente/:ciclo_ini/:ciclo_fin'] =
     array('[csmohist]CsmoHistController', 'last',
-        'match' => array('id_cliente' => '/[0-9]+/',
-        	'ciclo_ini' => '/[0-9]+/',
-    			'ciclo_fin' => '/[0-9]+/'));
+        'match' => array('id_cliente' => '/[0-9]+/'));
 
 $route['*']['/csmo-hist/curr/:id_cliente'] =
     array('[csmohist]CsmoHistController', 'curr',
@@ -92,13 +89,8 @@ $route['*']['/csmo-hist/avg/:id_cliente'] =
 
 $route['*']['/csmo-hist/graph/:id_cliente/:ciclo_ini/:ciclo_fin'] =
     array('[csmohist]ChartController', 'graph',
-        'match' => array('id_cliente' => '/[0-9]+/',
-        	'ciclo_ini' => '/[0-9]+/',
-    			'ciclo_fin' => '/[0-9]+/'));
+        'match' => array('id_cliente' => '/[0-9]+/'));
 
-$route['*']['/csmo-hist/excel/:id/:ciclo_ini/:ciclo_fin'] =
-    array('[matrixcsmo]ReportController', 'excel',
-        'match' => array('id_cliente' => '/[0-9]+/',
-        	'ciclo_ini' => '/[0-9]+/',
-    			'ciclo_fin' => '/[0-9]+/'));
+$route['*']['/csmo-hist/excel/:id/:fecha_ini/:fecha_fin'] =
+    array('[matrixcsmo]ReportController', 'excel');
 

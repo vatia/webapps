@@ -6,9 +6,6 @@
 
 <base href="{{baseurl}}" target="_self" />
 
-<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-<meta http-equiv="Pragma" content="no-cache">
-
 <link rel="shortcut icon" href="global/favicon.ico" type="image/x-icon" />
 
 <link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/default.css" />
@@ -17,34 +14,6 @@
 <link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/forms.css" />
 <link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/signin.css" />
 <link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/dialogbox.css" />
-
-<style type="text/css">
-<!-- if {{usrtype}} == 'asoc' -->
-#matriz-app a,
-#matriz-app a:hover,
-.selected#matriz-app a,
-.selected#matriz-app a:hover {
-    opacity: 0.2;
-    filter: alpha(opacity=20);
-}
-<!-- endif -->
-#censo-app a,
-#censo-app a:hover,
-.selected#censo-app a,
-.selected#censo-app a:hover {
-    opacity: 0.2;
-    filter: alpha(opacity=20);
-    width: 182px;
-}
-#calculo-app a,
-#calculo-app a:hover,
-.selected#calculo-app a,
-.selected#calculo-app a:hover {
-    opacity: 0.2;
-    filter: alpha(opacity=20);
-    width: 182px;
-}
-</style>
 
 <script type="text/javascript" src="global/js/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="global/js/jquery-ui.min.js" charset="utf-8"></script>
@@ -63,14 +32,12 @@ $(document).ready(function() {
     $(document).bind('contextmenu', function(e) { e.preventDefault(); return false; });
 
     var idleTime = 300000;
-    var initialSessionTimeoutMessage =
-        'Su sesión expirará en <span id="sessionTimeoutCountdown"></span>'+
-        ' segundos.<br /><br />Click en <b>OK</b> para continuar la sesión activa.';
+    var initialSessionTimeoutMessage = "Su sesion expirara en <span id='sessionTimeoutCountdown'></span> segundos.<br /><br />Click en <b>OK</b> para continuar su sesion.";
     var sessionTimeoutCountdownId = 'sessionTimeoutCountdown';
     var redirectAfter = 20;
-    var redirectTo = '{{baseurl}}session/expired';
-    var keepAliveURL = '{{baseurl}}keepalive';
-    var expiredMessage = 'Su sesión ha expirado. Se cerrará la sesión por razones de seguridad.';
+    var redirectTo = '/session/expired';
+    var keepAliveURL = '/keepalive';
+    var expiredMessage = 'Su sesion ha expirado. Se cerrará la sesión por razones de seguridad.';
     var running = false;
     var timer;
     var sessionTimeoutWarningDialog = $('#sessionTimeoutWarning');
@@ -89,9 +56,7 @@ $(document).ready(function() {
 
         switch($(this).attr('id')) {
             case 'matriz-app':
-<!-- if {{usrtype}} != 'asoc' -->
                 $('#canvas').load('{{baseurl}}matrix-csmo');
-<!-- endif -->
                 break;
             case 'historicos-app':
                 $('#canvas').load('{{baseurl}}csmo-hist');
@@ -100,6 +65,8 @@ $(document).ready(function() {
 <!-- if {{usrtype}} === 'corp' -->
                 $('#canvas').html("<iframe id='factura-web' src='http://192.168.0.50:83/nreconsultavatia/Controlador/lib/elimina.php'></iframe>");
                 $('#canvas').html("<iframe id='factura-web' src='http://192.168.0.50:83/nreconsultavatia/Controlador/lib/autenticar.php?login_user_text={{nit_cedula}}&login_pass_text={{nit_cedula}}'></iframe>");
+<!-- elseif {{usrtype}} === 'cial' -->
+                $('#canvas').html("<iframe id='factura-web' src='http://192.168.0.50:83/nreconsultavatia/Controlador/lib/autenticar.php?login_user_text=admin&login_pass_text=vsdc'></iframe>");
 <!-- else -->
                 $('#canvas').html("<iframe id='factura-web' src='http://192.168.0.50:83/nreconsultavatia/Controlador/lib/autenticar.php?login_user_text={{nit_cedula}}&login_pass_text={{id_interno}}'></iframe>");
 <!-- endif -->
@@ -122,20 +89,25 @@ $(document).ready(function() {
 
     $('#logout').click(function() {
         $('#factura-web').src('http://192.168.0.50:83/nreconsultavatia/Controlador/lib/elimina.php');
-        document.location.href = '{{baseurl}}logout';
+        document.location.href = '/logout';
     });
 
     $(sessionTimeoutWarningDialog).dialog({
-        title: 'Advertencia : Expiración de sesión',
-        autoOpen: false,
+        title: 'Session Expiration Warning',
+        autoOpen: false,  // set this to false so we can manually open it
         closeOnEscape: false,
         draggable: false,
         width: 460,
         minHeight: 60,
         modal: true,
-        beforeclose: function() {
+        beforeclose: function() { // bind to beforeclose so if the user clicks on the "X" or escape to close the dialog, it will work too
+            // stop the timer
             clearInterval(timer);
+
+            // stop countdown
             running = false;
+
+            // ajax call to keep the server-side session alive
             $.ajax({
               url: keepAliveURL,
               async: false
@@ -143,28 +115,41 @@ $(document).ready(function() {
         },
         buttons: {
             OK: function() {
+                // close dialog
                 $(this).dialog('close');
             }
         },
         resizable: false,
         open: function() {
+            // scrollbar fix for IE
             $('body').css('overflow','hidden');
         },
         close: function() {
+            // reset overflow
             $('body').css('overflow','auto');
         }
-    });
+    }); // end of dialog
 
+    // start the idle timer
     $.idleTimer(idleTime);
 
+    // bind to idleTimer's idle.idleTimer event
     $(document).bind("idle.idleTimer", function(){
+        // if the user is idle and a countdown isn't already running
         if($.data(document, 'idleTimer') === 'idle' && !running) {
             var counter = redirectAfter;
             running = true;
+
+            // intialisze timer
             $('#' + sessionTimeoutCountdownId).html(redirectAfter);
+            // open dialog
             $(sessionTimeoutWarningDialog).dialog('open');
+
+            // create a timer that runs every second
             timer = setInterval(function() {
                 counter -= 1;
+
+                // if the counter is 0, redirect the user
                 if(counter === 0) {
                     $(sessionTimeoutWarningDialog).html(expiredMessage);
                     $(sessionTimeoutWarningDialog).dialog('disable');
@@ -179,10 +164,12 @@ $(document).ready(function() {
 });
 
 function messagebox(message) {
+
     var maskHeight = $(document).height();
     var maskWidth = $(window).width();
     var dialogTop = (maskHeight/3) - ($('#dialog-box').height());
     var dialogLeft = (maskWidth/2) - ($('#dialog-box').width()/2);
+
     $('#dialog-overlay').css({height:maskHeight, width:maskWidth}).show();
     $('#dialog-box').css({top:dialogTop, left:dialogLeft}).show();
     $('#dialog-message').html(message);
@@ -206,30 +193,37 @@ function messagebox(message) {
 
         <div id="nav">
             <ul class="apps-tabs">
+
                 <li class="tabs-item" id="home">
                     <a href="javascript:void(0);">
                         <span class="app-title">Inicio</span>
                     </a></li>
+
                 <li class="tabs-item" id="matriz-app">
                     <a href="javascript:void(0);">
                         <span class="app-title">Matriz de Consumo</span>
                     </a></li>
+
                 <li class="tabs-item" id="historicos-app">
                     <a href="javascript:void(0);">
                         <span class="app-title">Consumos Hist&oacute;ricos</span>
                     </a></li>
+
                 <li class="tabs-item" id="censo-app">
                     <a href="javascript:void(0);">
                         <span class="app-title">Censo de Carga</span>
                     </a></li>
+
                 <li class="tabs-item" id="calculo-app">
                     <a href="javascript:void(0);">
                         <span class="app-title">C&aacute;lculo de Condensadores</span>
                     </a></li>
+
                 <li class="tabs-item" id="factura-app">
                     <a href="javascript:void(0);">
                         <span class="app-title">Factura Digital</span>
                     </a></li>
+
                 <li class="tabs-item" id="logout">
                     <a href="javascript:void(0);">
                         <span class="app-title">Cerrar Sesion</span>
@@ -243,12 +237,7 @@ function messagebox(message) {
     <div id="main">
 
         <div id="header">
-            <p id="alertas">
-            <!-- if {{usrtype}} == 'asoc' -->Asociado<!-- endif -->
-            <!-- if {{usrtype}} == 'front' -->Frontera<!-- endif -->
-            <!-- if {{usrtype}} == 'corp' -->Grupo Corporativo<!-- endif -->
-            <!-- if {{usrtype}} == 'cial' -->Asesor Comercial<!-- endif -->
-             : {{usrname}}</p>
+            <p id="alertas">mensajes informativos, alertas, advertencias</p>
             <span id="alert-icon"></span>
         </div>
 
@@ -272,12 +261,15 @@ function messagebox(message) {
     <!-- begin footer section -->
     <div id="footer-wrapper" class="bordes3">
         <div id="footer">
+
             <a href="javascript:void(0);" id="ligera"></a>
             <a href="javascript:void(0);" id="help"></a>
+
             <div id="img-right">
                 <img src="global/img/veritas.png" id="veritas" />
                 <img src="global/img/verify.png" id="verisign" />
             </div>
+
         </div>
     </div>
     <!-- end footer section -->

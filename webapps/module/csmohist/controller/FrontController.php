@@ -17,7 +17,7 @@ class FrontController extends DooController {
                 $data['baseurl'] = Doo::conf()->APP_URL;
 
                 // TODO: rango ciclos inicial
-                $data['ciclo_ini'] = '201107';
+                $data['ciclo_ini'] = '201108';
                 $data['ciclo_fin'] = '201108';
 
                 // TODO: rango ciclos min/max

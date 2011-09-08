@@ -67,11 +67,11 @@ a:hover {
     overflow: hidden;
     border-bottom: 1px solid #ccc;
     background: #e0e6c6;
-    /* display: none; */
+    display: none;
     /* z-index: 1000; */
-    /* position: absolute; */
-    /* left: 184px; */
-    /* width: 100%; */
+    position: absolute;
+    left: 183px;
+    width: 100%;
 }
 
 #sidebar {
@@ -101,13 +101,13 @@ a:hover {
 
 .info {
     /* background: #fff; */
-    /* position: absolute; */
+    position: absolute;
     /* left: 30px; */
     /* width: 810px; */
-    height: 624px;
-    /* padding-right: 28px; */
-    overflow-x: hidden;
-    overflow-y: scroll;
+    margin-left: 184px;
+    height: 528px;
+    padding-right: 28px;
+    overflow: auto;
     /* -webkit-border-top-right-radius: 15px;
     -moz-border-radius-topright: 15px;
     border-top-right-radius: 15px; */
@@ -133,10 +133,9 @@ div#logo {
 
 #alertas {
     text-transform: uppercase;
-    font-weight: bold !important;
-    text-align: center;
+    font-weight: bold;
     padding-top: 20px;
-    /* margin-left: 183px; */
+    margin-left: 183px;
     height: 40px;
 }
 
@@ -349,12 +348,12 @@ form {
 /** apps buttons **/
 
 #home a {
-    background: url(../img/bg-app.png) 0 0 no-repeat;
+    /* background: url(../img/vatia-sprites-all.png) 0 0 no-repeat; */
 }
 
 #home a:hover,
 .selected#matriz-app a {
-    background-position: 0 -78px !important;
+    /* background-position: 0 -78px !important; */
 }
 
 #home a:hover {
@@ -367,12 +366,12 @@ form {
 
 
 #logout a {
-    background: url(../img/bg-app.png) 0 0 no-repeat;
+    /* background: url(../img/vatia-sprites-all.png) 0 0 no-repeat; */
 }
 
 #logout a:hover,
 .selected#matriz-app a {
-    background-position: 0 -78px !important;
+    /* background-position: 0 -78px !important; */
 }
 
 #logout a:hover {
@@ -422,12 +421,16 @@ form {
 
 #censo-app a {
     background: url(../img/vatia-sprites-all.png) 0 -312px no-repeat;
+    /* opacity: 0.2;
+    filter: alpha(opacity=20); */
     cursor: default;
 }
 
 #censo-app a:hover,
 .selected#censo-app a {
     background-position: 0 -390px !important;
+    /* opacity: 0.2;
+    filter: alpha(opacity=20); */
     cursor: default;
 }
 
@@ -442,12 +445,16 @@ form {
 
 #calculo-app a {
     background: url(../img/vatia-sprites-all.png) 0 -468px no-repeat;
+    /* opacity: 0.2;
+    filter: alpha(opacity=20); */
     cursor: default;
 }
 
 #calculo-app a:hover,
 .selected#calculo-app a {
     background-position: 0 -547px !important;
+    /* opacity: 0.2;
+    filter: alpha(opacity=20); */
     cursor: default;
 }
 
@@ -462,12 +469,16 @@ form {
 
 #factura-app a {
     background: url(../img/vatia-sprites-all.png) 0 -624px no-repeat;
+    /* opacity: 0.2;
+    filter: alpha(opacity=20); */
     cursor: default;
 }
 
 #factura-app a:hover,
 .selected#factura-app a {
     background-position: 0 -702px !important;
+    /* opacity: 0.2;
+    filter: alpha(opacity=20); */
     cursor: default;
 }
 
