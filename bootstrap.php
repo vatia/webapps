@@ -5,9 +5,10 @@ require_once './webapps/config/routes.conf.php';
 require_once './webapps/config/acl.conf.php';
 require_once './webapps/config/db.conf.php';
 
-require_once $config['BASE_PATH'] . 'Doo.php';
-require_once $config['BASE_PATH'] . 'app/DooConfig.php';
-//require_once $config['BASE_PATH'] . 'diagnostic/debug.php';
+//require_once $config['BASE_PATH'] . 'Doo.php';
+//require_once $config['BASE_PATH'] . 'app/DooConfig.php';
+require_once $config['BASE_PATH'] . 'deployment/deploy.php';
+require_once $config['BASE_PATH'] . 'diagnostic/debug.php';
 
 function __autoload($classname){
 	Doo::autoload($classname);
@@ -26,7 +27,7 @@ try {
 }
 
 Doo::acl()->rules = $acl;
-Doo::acl()->defaultFailedRoute = Doo::conf()->APP_URL . '/error';
+Doo::acl()->defaultFailedRoute = '/error';
 
 Doo::app()->route = $route;
 

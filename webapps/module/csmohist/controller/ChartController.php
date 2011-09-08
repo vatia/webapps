@@ -14,8 +14,6 @@ class ChartController extends DooController {
         	'limit' => 1));
         Doo::logger()->endDbProfile('find_cte');
 
-        //echo json_encode($cte);
-
         if (is_object($cte) && ($cte instanceof M02Clientes)) {
 
 	        Doo::logger()->beginDbProfile('find_fact', 'csmo_rpt');
@@ -33,34 +31,58 @@ class ChartController extends DooController {
 
 	        require_once $jpgraph_path . 'jpgraph.php';
 	        require_once $jpgraph_path . 'jpgraph_bar.php';
+	        require_once $jpgraph_path . 'jpgraph_line.php';
 
-	        $data1y = $data2y = array();
+	        $ciclos = $activa = $reactiva = array();
 
 	        if (is_array($facturas) && count($facturas) > 0) {
-	        	//echo json_encode($facts);
 	        	foreach ($facturas as $fact) {
-	                array_push($data1y, $fact->csm_act);
-	                array_push($data2y, $fact->csm_rea);
+	        		array_push($ciclos, $fact->ciclo);
+	                array_push($activa, $fact->csm_act);
+	                array_push($reactiva, $fact->csm_rea);
 		        }
 	        }
-	        if ((count($data1y) == 0) && (count($data2y) == 0)) {
-	            $data1y = $data2y = array(0);
+	        if ((count($activa) == 0) && (count($reactiva) == 0)) {
+	            $activa = $reactiva = array(0);
 	        }
 
-	        $graph = new Graph(640, 220);
+	        $graph = new Graph(650, 220, 'auto');
+
 	        $graph->SetScale('textlin');
+	        $graph->SetMargin(48, 10, 0, 40);
+	        $graph->SetTheme(new UniversalTheme());
+	        $graph->SetBox(false);
 
-	        $b1plot = new BarPlot($data1y);
-	        $b2plot = new BarPlot($data2y);
+	        $graph->ygrid->SetFill(false);
 
-	        $gbplot = new GroupBarPlot(array($b1plot, $b2plot));
+	        $bar_act = new BarPlot($activa);
+	        $bar_act->SetLegend('Activa');
+			$bar_act->SetCSIMTargets(null, $activa);
+	        $bar_act->value->Show(true);
+	        $bar_act->SetShadow(true);
 
-	        $graph->Add($gbplot);
+	        $bar_rea = new BarPlot($reactiva);
+	        $bar_rea->SetLegend('Reactiva');
 
-	        $graph->xaxis->title->Set('ciclos');
-	        $graph->yaxis->title->Set('consumos');
+	        $line_act = new LinePlot($activa);
+	        $line_act->SetWeight(1);
+	        $line_act->SetBarCenter(true);
 
-	        $graph->title->Set($cte->nombre_facturacion);
+	        $graph->Add(new GroupBarPlot(array($bar_act, $bar_rea)));
+	        $graph->Add($line_act);
+
+	        $graph->title->Set($cte->id_cliente.' - '.$cte->nombre_facturacion);
+
+	        //$graph->legend->SetFrameWeight(1);
+
+	        $graph->xaxis->title->Set('Ciclos Facturacion');
+	        $graph->xaxis->SetTickLabels($ciclos);
+	        $graph->xaxis->HideLine(false);
+	        $graph->xaxis->HideTicks(false, false);
+
+	        $graph->yaxis->title->Set('Consumos KWh');
+	        $graph->yaxis->HideLine(false);
+	        $graph->yaxis->HideTicks(false, false);
 
 	        $filename = Doo::session()->getId() . '_' . $cte->id_cliente .
 	             'csmohist' . $this->params['ciclo_ini'] .
@@ -81,3 +103,4 @@ class ChartController extends DooController {
         }
     }
 }
+

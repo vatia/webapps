@@ -44,13 +44,18 @@ $(document).ready(function() {
 
     function csmo_refresh() {
 
+        $('#graph-container').empty().html('<img src="global/img/preloader/facebook.gif" />');
         $('#graph-container').load('{{baseurl}}csmo-hist/graph/' +
             id_cliente + '/' + ciclo_ini + '/' + ciclo_fin);
 
+        $('#ultimos-consumos').empty().html('<img src="global/img/preloader/facebook.gif" />');
         $('#ultimos-consumos').load('{{baseurl}}csmo-hist/last/' +
                 id_cliente + '/' + ciclo_ini + '/' + ciclo_fin);
 
+        $('#csmo-actual').empty().html('<img src="global/img/preloader/facebook.gif" />');
         $('#csmo-actual').load('{{baseurl}}csmo-hist/curr/' + id_cliente);
+
+        $('#csmo-promedio').empty().html('<img src="global/img/preloader/facebook.gif" />');
         $('#csmo-promedio').load('{{baseurl}}csmo-hist/avg/' + id_cliente);
     }
 
@@ -144,7 +149,7 @@ $(document).ready(function() {
     <!-- endif -->
 
     <div id="graph-container" class="bordes4">
-        <img src="{{graph}}" width="100%" height="100%" />
+        <!--<img src="{{graph}}" width="650" height="220" />-->
     </div>
 
     <div id="data-container">

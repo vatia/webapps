@@ -1,6 +1,6 @@
 
 RewriteEngine On
-RewriteBase /demo
+RewriteBase /
 
 # if a directory or a file exists, use it directly
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -17,21 +17,42 @@ RewriteRule ^(.*)$ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
 #RewriteRule !\.(js|ico|gif|jpg|png|css|swf|mpg|mpeg|avi|flv)$ index.php
 
 # display no errs to user
-#php_flag display_startup_errors off
-#php_flag display_errors off
-#php_flag html_errors off
+php_flag display_startup_errors on
+php_flag display_errors on
+php_flag html_errors on
 
 # log to file
-#php_flag log_errors on
-#php_value error_log /vhost/webapps.vatia.co/logs/php.log
+php_flag log_errors on
+php_value error_log /vhost/webapps.vatia.co/htdocs/logs/php.log
 
 # memory limit
-#php_value memory_limit 256M
+php_value memory_limit 256M
 
 # session
 #php_value session.gc_maxlifetime 3600
-#php_value session.save_path /vhost/webapps.vatia.co/htdocs/temp/sessions
+php_value session.save_path /vhost/webapps.vatia.co/htdocs/temp/sessions
+
+#php_admin_flag tidy.clean_output off
+#php_admin_flag session.auto_start off
 
 #BrowserMatch MSIE best-standards-support
 #Header set X-UA-Compatible IE=edge env=best-standards-support
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    #ExpiresByType text/css "access plus 1 month"
+    #ExpiresByType text/javascript "access plus 1 month"
+    #ExpiresByType application/x-javascript "access plus 1 month"
+    #ExpiresByType application/javascript "access plus 1 month"
+    #ExpiresByType image/png "access plus 1 year"
+    #ExpiresByType image/jpeg "access plus 1 year"
+    #ExpiresByType image/gif "access plus 1 year"
+    #ExpiresByType image/x-icon "access plus 1 month"
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(gif|jpe?g|png)$">
+        Header set Cache-Control "public"
+    </FilesMatch>
+</IfModule>
 
