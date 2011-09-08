@@ -4,6 +4,8 @@ class LoginController extends DooController {
 
     public function index() {
 
+    	Doo::loadModel('M00Usuarios');
+
         if (Doo::session()->isStarted()) {
             $objUsr = Doo::session()->get('usr');
             if (is_object($objUsr) && ($objUsr instanceof M00Usuarios)) {
@@ -11,7 +13,7 @@ class LoginController extends DooController {
             } else {
                 $data['msg'] = null;
                 $data['baseurl'] = Doo::conf()->APP_URL;
-                $this->view()->render('login', $data);
+                self::view()->render('login', $data);
             }
         } else {
             return array(Doo::conf()->APP_URL . 'login/wrong/201', 303);
@@ -20,36 +22,60 @@ class LoginController extends DooController {
 
     public function login() {
 
-        $objUsr = $this->db()->find('M00Usuarios',
-        	array('where' => '(login = ? OR email = ?) AND passwd = md5(?)',
-            	'param' => array($_REQUEST['username'], $_REQUEST['username'],
-                	$_REQUEST['passwd']), 'limit' => 1));
+    	Doo::loadModel('M00Usuarios');
+    	Doo::loadModel('M02Clientes');
+    	Doo::loadModel('M02GruposCliente');
+
+    	Doo::logger()->beginDbProfile('find_usr', 'login');
+        $objUsr = self::db()->find('M00Usuarios', array(
+        	'where' => '(login = ? OR email = ?) AND passwd = md5(?)',
+            'param' => array(
+        				$_REQUEST['username'],
+        				$_REQUEST['username'],
+        				$_REQUEST['passwd']),
+        	'limit' => 1));
+        Doo::logger()->endDbProfile('find_usr');
 
         if (is_object($objUsr) && ($objUsr instanceof M00Usuarios)) {
 
             Doo::session()->usr = $objUsr;
             Doo::session()->usrtype = $_REQUEST['usertype'];
 
+            $isValid = false;
+
             switch ($_REQUEST['usertype']) {
 
                 case 'asoc':
                 case 'front':
 
-                    $objCte = $this->db()->find('M02Clientes',
-                        array('where' => 'id_cliente = ?',
-                            'param' => array($_REQUEST['id']), 'limit' => 1));
+                	Doo::logger()->beginDbProfile('find_cte', 'login_asoc_front');
+                    $objCte = self::db()->find('M02Clientes', array(
+                    	'where' => 'id_cliente = ?',
+                    	'param' => array($_REQUEST['id']),
+                    	'limit' => 1));
+                    Doo::logger()->endDbProfile('find_cte');
 
                     if (is_object($objCte) && ($objCte instanceof M02Clientes)) {
 
-                        $clientes = $objCte->relateM00Usuarios(
+                        Doo::session()->cte = $objCte;
+
+                    	Doo::logger()->beginDbProfile(
+                    		'find_cte_x_usr', 'login_asoc_front');
+
+                        $clientes = self::db()->relate('M02Clientes', 'M00Usuarios',
                             array('where' => 'm00_cte_x_usr.id_usuario = ?',
-                                'param' => array($objUsr->id_usuario)));
+                                'param' => array($objUsr->id_usuario),
+                            		'match' => true));
+
+                        Doo::logger()->endDbProfile('find_cte_x_usr');
 
                         if (is_array($clientes) && count($clientes) > 0) {
 
                             foreach ($clientes as $cte) {
 
-                                if ($cte->id_cliente == $objCte->id_cliente) {
+                                if ($cte->id_cliente === $objCte->id_cliente) {
+
+                                	$isValid = true;
 
                                     switch ($objCte->m02tcl_id_tipo_cliente) {
                                         case 1:
@@ -68,13 +94,11 @@ class LoginController extends DooController {
                                             throw new LoginUserTypeException(
                                             	'Tipo de usuario no valido');
                                     }
-
-                                    Doo::session()->cte = $objCte;
-
                                     break;
                                 }
                             }
-                        } else {
+                        }
+                        if (!$isValid) {
                             return array(Doo::conf()->APP_URL .
                             	'login/wrong/104', 303);
                         }
@@ -86,17 +110,23 @@ class LoginController extends DooController {
 
                 case 'corp':
 
-                    $objGrp = $this->db()->find('M02GruposCliente',
-                    	array('where' => 'id = ?',
-                    		'param' => array($_REQUEST['id']), 'limit' => 1));
+                	Doo::logger()->beginDbProfile('find_grp', 'login_corp');
+                    $objGrp = self::db()->find('M02GruposCliente', array(
+                    	'where' => 'id = ?',
+                    	'param' => array($_REQUEST['id']),
+                    	'limit' => 1));
+                    Doo::logger()->endDbProfile('find_grp');
 
                     if (is_object($objGrp) && ($objGrp instanceof M02GruposCliente)) {
 
-                        $grupos = $objGrp->relateM00Usuarios(
-                            array(
-                                'where' => 'm00_grp_x_usr.id_usuario = ?',
-                                'param' => array($objUsr->id_usuario)
-                            ));
+                    	Doo::session()->grp = $objGrp;
+
+                    	Doo::logger()->beginDbProfile('find_grp_x_usr', 'login_corp');
+                        $grupos = self::db()->relate('M02GruposCliente', 'M00Usuarios',
+                            array('where' => 'm00_usuarios.id_usuario = ?',
+                                'param' => array($objUsr->id_usuario),
+                            		'match' => true));
+                        Doo::logger()->endDbProfile('find_grp_x_usr');
 
                         if (is_array($grupos) && (count($grupos) > 0)) {
 
@@ -104,14 +134,16 @@ class LoginController extends DooController {
 
                                 if ($grp->id === $objGrp->id) {
 
-                                    Doo::session()->grp = $objGrp;
+                                	$isValid = true;
 
-                                    $objCte = new M02Clientes();
-                                    $clientes = $objCte->relateM02GruposCliente(
-                                        array(
-                                            'where' => 'm02_clientes.m02gcli_id = ?',
-                                            'param' => array($objGrp->id)
-                                        ));
+                                    Doo::logger()->beginDbProfile(
+                                    	'find_cte_x_grp', 'login_corp');
+                                    $clientes = self::db()->
+                                    	relate('M02Clientes', 'M02GruposCliente',
+                                    	array('where' => 'm02_clientes.m02gcli_id = ?',
+                                            'param' => array($objGrp->id),
+                                    			'asc' => 'id_cliente'));
+                                    Doo::logger()->endDbProfile('find_cte_x_grp');
 
                                     if (is_array($clientes) && (count($clientes) > 0)) {
                                         Doo::session()->clientes = $clientes;
@@ -120,7 +152,8 @@ class LoginController extends DooController {
                                     break;
                                 }
                             }
-                        } else {
+                        }
+                        if (!$isValid) {
                             return array(Doo::conf()->APP_URL .
                             	'login/wrong/105', 303);
                         }
@@ -132,12 +165,42 @@ class LoginController extends DooController {
 
                 case 'cial':
 
-                    $cte = new M02Clientes();
-                    $cte->id_cliente = 1003699;
-                    $cte = $this->db()->find($cte, array('limit' => 1));
+                	Doo::logger()->beginDbProfile('find_cte_vtia', 'login_cial');
+                    $objCte = self::db()->find('M02Clientes',
+                    	array('where' => 'id_cliente = ?',
+                    		'param' => array('1003699'), 'limit' => 1));
+                   	Doo::logger()->endDbProfile('find_cte_vtia');
 
-                    if (is_object($cte) && ($cte instanceof M02Clientes)) {
-                        Doo::session()->cte = $cte;
+                    if (is_object($objCte) && ($objCte instanceof M02Clientes)) {
+
+                    	Doo::session()->cte = $objCte;
+
+                    	Doo::logger()->beginDbProfile(
+                    		'find_cte_x_usr', 'login_cial');
+
+                        $clientes = self::db()->relate('M02Clientes', 'M00Usuarios',
+                            array('where' => 'm00_cte_x_usr.id_usuario = ?',
+                                'param' => array($objUsr->id_usuario),
+                            		'match' => true));
+
+                        Doo::logger()->endDbProfile('find_cte_x_usr');
+
+                        $isValid = false;
+                        if (is_array($clientes) && count($clientes) > 0) {
+                            foreach ($clientes as $cte) {
+                                if ($cte->id_cliente === $objCte->id_cliente) {
+                                	$isValid = true;
+                                }
+                            }
+                        }
+                        if (!$isValid) {
+                            return array(Doo::conf()->APP_URL .
+                            	'login/wrong/104', 303);
+                        }
+
+                    } else {
+                        return array(Doo::conf()->APP_URL .
+                        	'login/wrong/102', 303);
                     }
                     break;
 
@@ -175,7 +238,7 @@ class LoginController extends DooController {
                 $data['msg'] = 'ERROR-105 - Usuario no pertenece a este corporativo';
                 break;
             case 106:
-                $data['msg'] = 'ERROR-106 - Id cliente no corresponde al tipo de usuario elegido';
+                $data['msg'] = 'ERROR-106 - Id cliente no corresponde al tipo de usuario';
                 break;
             case 201:
                 $data['msg'] = 'WARNING-201 - Sesion expirada por inactividad';
@@ -185,7 +248,7 @@ class LoginController extends DooController {
         }
 
         $data['baseurl'] = Doo::conf()->APP_URL;
-        $this->view()->render('login', $data);
+        self::view()->render('login', $data);
     }
 
     public function expired() {
@@ -195,7 +258,7 @@ class LoginController extends DooController {
         }
         $data['msg'] = 'WARNING-201 - Sesion expirada por inactividad';
     	$data['baseurl'] = Doo::conf()->APP_URL;
-        $this->view()->render('login', $data);
+        self::view()->render('login', $data);
     }
 
     public function logout() {
