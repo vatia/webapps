@@ -33,17 +33,17 @@ class CsmoHistController extends DooController {
         } else {
         	$data['facturas'] = array();
         }
-        $this->view()->render('lastcsmo', $data);
+        self::view()->render('lastcsmo', $data);
     }
 
     public function curr() {
         $data['factura'] = self::bill($this->params['id_cliente']);
-        $this->view()->render('currcsmo', $data);
+        self::view()->render('currcsmo', $data);
     }
 
     public function avg() {
         $data['factura'] = self::bill($this->params['id_cliente']);
-        $this->view()->render('csmoavg', $data);
+        self::view()->render('csmoavg', $data);
     }
 
     private function bill($id_cliente) {
