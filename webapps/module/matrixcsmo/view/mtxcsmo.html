@@ -1,3 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Vatia :: Webapps</title>
+
+<base href="{{baseurl}}" target="_self" />
+
+<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+<meta http-equiv="Pragma" content="no-cache">
+
+<link rel="shortcut icon" href="global/favicon.ico" type="image/x-icon" />
+
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/default.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/smoothness/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/dateslider.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/forms.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/signin.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/dialogbox.css" />
+
+<!-- if {{usrtype}} == 'corp' -->
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/corp.css" />
+<!-- endif -->
+
+<script type="text/javascript" src="global/js/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery-ui.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.tools.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.range-slider.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.date-range-slider.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.idletimer.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.iframe.js" charset="utf-8"></script>
+<script type="text/javascript" src="global/js/jquery.pngfix.js" charset="utf-8"></script>
+
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
 
@@ -25,7 +58,7 @@ $(document).ready(function() {
             $('#mtx-' + csmotypes[i] + '-data').empty()
             .html('<img src="global/img/preloader/facebook.gif" />');
 
-            $('#mtx-' + csmotypes[i] + '-data').load('/matrix-csmo/' +
+            $('#mtx-' + csmotypes[i] + '-data').load('{{baseurl}}matrix-csmo/' +
                 csmotypes[i] + '/' + id_cliente + '/' +
                     fecha_ini + '/' + fecha_fin);
         });
@@ -85,10 +118,10 @@ $(document).ready(function() {
         });
         if (csmos != '') {
             <!-- if {{usrtype}} !== 'corp' -->
-            var v_url = '/matrix-csmo/excel' + '/' +
+            var v_url = '{{baseurl}}matrix-csmo/excel' + '/' +
                 id_cliente + '/' + fecha_ini + '/' + fecha_fin + '/' + csmos;
             <!-- else -->
-            var v_url = '/matrix-csmo/excel' + '/' +
+            var v_url = '{{baseurl}}matrix-csmo/excel' + '/' +
                 id_grupo + '/' + fecha_ini + '/' + fecha_fin + '/' + csmos;
             <!-- endif -->
             $('#report iframe').src(v_url);
@@ -97,6 +130,10 @@ $(document).ready(function() {
             return false;
         }
     });
+
+    <!-- if {{usrtype}} == 'corp' -->
+    $('.scrollable').scrollable();
+    <!-- endif -->
 
 });
 </script>
@@ -138,38 +175,6 @@ $(document).ready(function() {
     </div>
 
     <!-- if {{usrtype}} == 'corp' -->
-    <div class="box-slide">
-        <ul id="slides">
-
-            <li id="left-btn" class="boton"><a href="javascript:void(0);"></a></li>
-
-            <li id="num-chek">
-                <ul class="listado">
-
-                    <!-- loop clientes -->
-                    <li class="list-item">
-                        <!-- /csmo-hist/corp/{{id_grupo}}/{{clientes' v.@id_cliente}} -->
-                        <a href="javascript:void(0);" class="options"
-                            title="{{clientes' v.@nombre_facturacion}}">
-                            {{clientes' v.@id_cliente}}
-                        </a>
-                        <!--<input type="checkbox" />-->
-                    </li>
-                    <li class="separator">&nbsp;</li>
-                    <!-- endloop -->
-
-                </ul>
-            </li>
-
-            <!--<li id="todos">
-                    <a href="javascript:void(0);" title="todos">TODOS</a>
-                    <br /><input type="checkbox" />
-                </li>-->
-
-            <li id="right-btn" class="boton"><a href="javascript:void(0);"></a></li>
-
-        </ul>
-    </div>
     <!-- else -->
     <br clear="all" />
     <!-- endif -->
@@ -250,3 +255,6 @@ $(document).ready(function() {
 <div id="report">
     <iframe src=""></iframe>
 </div>
+
+</body>
+</html>

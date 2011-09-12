@@ -633,7 +633,7 @@ class ReportController extends DooController {
     	$objWriter = PHPExcel_IOFactory::createWriter($excel, 'Excel5');
         $objWriter->save(Doo::conf()->SITE_PATH . 'temp/' . $filename);
 
-        $this->load()->download(Doo::conf()->SITE_PATH . 'temp/' . $filename);
+        self::load()->download(Doo::conf()->SITE_PATH . 'temp/' . $filename);
     }
 
     public function pdf() {
@@ -670,6 +670,6 @@ class ReportController extends DooController {
 
     	$pdf->Output(Doo::conf()->SITE_PATH . 'temp/' . $filename, 'F');
 
-        $this->view()->render('pdf', $data);
+        self::view()->render('pdf', $data);
     }
 }
