@@ -16,13 +16,12 @@ class FrontController extends DooController {
                 $data['sess_id'] = Doo::session()->getId();
                 $data['baseurl'] = Doo::conf()->APP_URL;
 
-                // TODO: rango fechas inicial
-                $data['fecha_ini'] = '2011-08-01';
-                $data['fecha_fin'] = '2011-09-01';
+                $data['fecha_ini'] = date('Y-m-d', mktime(0, 0, 0,
+                	date('m')-1, date('d'), date('Y')));
+                $data['fecha_fin'] = date('Y-m-d');
 
-                // TODO: rango fechas min/max
-                $data['fecha_ini_min'] = '2011-08-01';
-                $data['fecha_fin_max'] = '2011-09-01';
+                $data['fecha_ini_min'] = '2011-01-02';
+                $data['fecha_fin_max'] = date('Y-m-d');
 
                 $data['graph'] = 'global/img/graph-line.png';
 
