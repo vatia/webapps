@@ -8,17 +8,17 @@ $config['BASE_PATH'] = 'doophp/';
 
 $config['PROTECTED_FOLDER'] = 'webapps/';
 
-$config['SUBFOLDER'] = '/demo/';
+$config['SUBFOLDER'] = '/';
 
-$config['APP_MODE'] = 'prod';
+$config['APP_MODE'] = 'dev';
 
-$config['APP_URL'] = 'https://' . $_SERVER['HTTP_HOST'] . $config['SUBFOLDER'];
+$config['APP_URL'] = app_url_base() . $config['SUBFOLDER'];
 
 $config['APP_URL_NO_WWW'] = str_replace('www.', '', $config['APP_URL']);
 
 $config['AUTOROUTE'] = true;
 
-$config['DEBUG_ENABLED'] = true;
+$config['DEBUG_ENABLED'] = ($config['APP_MODE'] === 'dev');
 
 $config['LOG_PATH'] = 'logs/';
 
@@ -46,15 +46,18 @@ $config['AUTOLOAD'] = array('class', 'libraries', 'model',
     'module/factweb/controller', 'module/factweb/model',
     'module/loadcensus/controller', 'module/loadcensus/model',
     'module/matrixcsmo/controller', 'module/matrixcsmo/model',
-    'module/updinfo/controller', 'module/updinfo/model'
-);
+    'module/updinfo/controller', 'module/updinfo/model');
 
 $config['TEMPLATE_ENGINE'] = 'DooView';
 
 $config['TEMPLATE_ALLOW_PHP'] = true;
 
-$config['TEMPLATE_COMPILE_ALWAYS'] = true;
+$config['TEMPLATE_COMPILE_ALWAYS'] = $config['DEBUG_ENABLED'];
 
-$config['TEMPLATE_SHOW_COMMENT'] = false;
+$config['TEMPLATE_SHOW_COMMENT'] = $config['DEBUG_ENABLED'];
+
+$config['TEMPLATE_GLOBAL_TAGS'] = array('isset', 'empty',
+	'strtoupper', 'strtolower', 'ucwords', 'ucfirst', 'number_format');
 
 $config['SESSION_CACHE_TYPE'] = 'APC';
+
