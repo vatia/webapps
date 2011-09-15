@@ -118,10 +118,10 @@ $(document).ready(function() {
         });
         if (csmos != '') {
             <!-- if {{usrtype}} !== 'corp' -->
-            var v_url = '{{baseurl}}matrix-csmo/excel' + '/' +
+            var v_url = '{{baseurl}}matrix-csmo/excel/cte/' +
                 id_cliente + '/' + fecha_ini + '/' + fecha_fin + '/' + csmos;
             <!-- else -->
-            var v_url = '{{baseurl}}matrix-csmo/excel' + '/' +
+            var v_url = '{{baseurl}}matrix-csmo/excel/corp/' +
                 id_grupo + '/' + fecha_ini + '/' + fecha_fin + '/' + csmos;
             <!-- endif -->
             $('#report iframe').src(v_url);
