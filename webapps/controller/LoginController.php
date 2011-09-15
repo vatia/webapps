@@ -263,8 +263,8 @@ class LoginController extends DooController {
 
     public function logout() {
 
-        foreach (glob(Doo::conf()->SITE_PATH . 'temp/' .
-            Doo::session()->getId() . '*', GLOB_ONLYDIR) as $filename) {
+        foreach (glob(Doo::conf()->SITE_PATH . 'temp/*' .
+            Doo::session()->getId() . '*.*', GLOB_ONLYDIR) as $filename) {
             if (is_file($filename)) {
                 unlink($filename);
             }
