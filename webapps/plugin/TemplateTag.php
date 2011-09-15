@@ -2,7 +2,7 @@
 
 class TemplateTag {
 
-    function fmt_num($num) {
+    public static function fmt_num($num) {
 	    return number_format($num, 0, ',', '.');
     }
 }
