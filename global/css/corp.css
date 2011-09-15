@@ -1,0 +1,124 @@
+@charset "utf-8";
+
+.scrollable {
+    position: relative;
+    width: 660px;
+    overflow: hidden;
+}
+
+a.right { }
+a.right:hover { }
+a.right:active { } 
+
+a.left { }
+a.left:hover { }
+a.left:active { }
+
+
+.box-slide {
+    /* clear: both; */
+    overflow: hidden;
+    /* width: 800px; */
+    margin: 20px auto;
+    /* position: relative; */
+    padding-left: 90px;
+}
+
+.box-slide input[type="checkbox"] {
+    margin: 0 60% 0 40%;
+}
+
+#slides li {
+    float: left;
+    list-style-type: none;
+    margin: 0 6px;
+}
+
+#slides li.separator {
+    vertical-align: middle;
+    padding-top: 10px;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+#slides li.boton a {
+    display: block;
+    line-height: 20px;
+    padding: 2px 0;
+    position: relative;
+    height: 32px;
+    width: 33px;
+}
+
+ul.listado {
+    width: 680px;
+    display: block;
+}
+
+
+.scrollable .items {
+    width: 20000em;
+    position: absolute;
+    clear: both;
+}
+
+.items div {
+    float: left;
+    /* width: 680px; */
+}
+
+li.list-item {
+    width: 80px;
+}
+
+a.options {
+    font-size: 26px !important;
+}
+
+a.options.selected {
+    text-decoration: underline !important;
+    font-weight: bold !important;
+    color: #6c7a23;
+}
+
+a.options:hover, li#todos a:hover {
+    text-decoration: none;
+    color: #6c7a23;
+}
+
+#left-btn a {
+    float: right;
+    background: url(../img/vatia-sprites-all.png) 0 -1892px no-repeat;
+    width: 105px;
+    z-index: 900;
+}
+
+#left-btn a:hover {
+    background-position: -36px -1892px !important;
+}
+
+.disabled#left-btn {
+    opacity: 0.4;
+    filter: alpha(opacity=40);       
+}
+
+#right-btn a {
+    float: left;
+    background: url(../img/vatia-sprites-all.png) -72px -1892px no-repeat;
+    width: 105px;
+    z-index: 900;
+}
+
+#right-btn a:hover {
+    background-position: -108px -1892px !important;
+}
+
+.disabled#right-btn {
+    opacity: 0.4;
+    filter: alpha(opacity=40);       
+}
+
+li#num-chek  {
+    height: 32px;
+    overflow: hidden;
+}
