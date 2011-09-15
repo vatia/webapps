@@ -18,6 +18,10 @@
 <link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/signin.css" />
 <link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/dialogbox.css" />
 
+<!-- if {{usrtype}} == 'corp' -->
+<link rel="stylesheet" type="text/css" media="screen, projection" href="global/css/corp.css" />
+<!-- endif -->
+
 <script type="text/javascript" src="global/js/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="global/js/jquery-ui.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="global/js/jquery.tools.min.js" charset="utf-8"></script>
@@ -98,6 +102,9 @@ $(document).ready(function() {
         $('#report iframe').src(v_url);
     });
 
+    <!-- if {{usrtype}} == 'corp' -->
+    $('.scrollable').scrollable();
+    <!-- endif -->
 });
 </script>
 
@@ -112,38 +119,6 @@ $(document).ready(function() {
     </div>
 
     <!-- if {{usrtype}} == 'corp' -->
-    <div class="box-slide">
-        <ul id="slides">
-
-            <li id="left-btn" class="boton"><a href="javascript:void(0);"></a></li>
-
-            <li id="num-chek">
-                <ul class="listado">
-
-                    <!-- loop clientes -->
-                    <li class="list-item">
-                        <!-- /csmo-hist/corp/{{id_grupo}}/{{clientes' v.@id_cliente}} -->
-                        <a href="javascript:void(0);" class="options"
-                            title="{{clientes' v.@nombre_facturacion}}">
-                            {{clientes' v.@id_cliente}}
-                        </a>
-                        <!--<input type="checkbox" />-->
-                    </li>
-                    <li class="separator">&nbsp;&nbsp;</li>
-                    <!-- endloop -->
-
-                </ul>
-            </li>
-
-            <!--<li id="todos">
-                    <a href="javascript:void(0);">TODOS</a>
-                    <br /><input type="checkbox" />
-                </li>-->
-
-            <li id="right-btn" class="boton"><a href="javascript:void(0);"></a></li>
-
-        </ul>
-    </div>
     <!-- else -->
         <br clear="all" />
     <!-- endif -->

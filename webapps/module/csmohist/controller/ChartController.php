@@ -35,9 +35,28 @@ class ChartController extends DooController {
 
 	        $ciclos = $activa = $reactiva = array();
 
+	        $meses = array(
+	        	'01' => 'Ene',
+	        	'02' => 'Feb',
+	        	'03' => 'Mar',
+	        	'04' => 'Abr',
+	        	'05' => 'May',
+	        	'06' => 'Jun',
+	        	'07' => 'Jul',
+	        	'08' => 'Ago',
+	        	'09' => 'Sep',
+	        	'10' => 'Oct',
+	        	'11' => 'Nov',
+	        	'12' => 'Dic'
+	        );
+
 	        if (is_array($facturas) && count($facturas) > 0) {
 	        	foreach ($facturas as $fact) {
-	        		array_push($ciclos, $fact->ciclo);
+
+	        		$c_year = substr($fact->ciclo, 0, 4);
+	        		$c_month = substr($fact->ciclo, 4, 2);
+
+	        		array_push($ciclos, $meses[$c_month] . ' ' . $c_year);
 	                array_push($activa, $fact->csm_act);
 	                array_push($reactiva, $fact->csm_rea);
 		        }
@@ -68,11 +87,16 @@ class ChartController extends DooController {
 	        $bar_rea->SetShadow(true);
 
 	        $line_act = new LinePlot($activa);
-	        $line_act->SetWeight(1);
-	        $line_act->SetBarCenter(true);
+	        $line_act->SetWeight(2);
+	        //$line_act->SetBarCenter(true);
+
+	        //$line_rea = new LinePlot($reactiva);
+	        //$line_rea->SetWeight(2);
+	        //$line_rea->SetBarCenter(true);
 
 	        $graph->Add(new GroupBarPlot(array($bar_act, $bar_rea)));
 	        $graph->Add($line_act);
+	        //$graph->Add($line_rea);
 
 	        $graph->title->Set($cte->id_cliente.' - '.$cte->nombre_facturacion);
 

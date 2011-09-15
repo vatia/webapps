@@ -33,17 +33,45 @@ class CsmoHistController extends DooController {
         } else {
         	$data['facturas'] = array();
         }
+
+        for ($i=0; $i<count($data['facturas']); $i++) {
+
+	        $data['facturas'][$i]->csm_act =
+	        	number_format($data['facturas'][$i]->csm_act, 0, ',', '.');
+
+	        $data['facturas'][$i]->csm_rea =
+	        	number_format($data['facturas'][$i]->csm_rea, 0, ',', '.');
+
+        }
+
+
         self::view()->render('lastcsmo', $data);
     }
 
     public function curr() {
-        $data['factura'] = self::bill($this->params['id_cliente']);
+
+    	$data['factura'] = self::bill($this->params['id_cliente']);
+
+        $data['factura']->csm_act =
+        	number_format($data['factura']->csm_act, 0, ',', '.');
+
+        $data['factura']->csm_rea =
+        	number_format($data['factura']->csm_rea, 0, ',', '.');
+
         self::view()->render('currcsmo', $data);
     }
 
     public function avg() {
-        $data['factura'] = self::bill($this->params['id_cliente']);
-        self::view()->render('csmoavg', $data);
+
+    	$data['factura'] = self::bill($this->params['id_cliente']);
+
+    	$data['factura']->csm_act_promedio =
+        	number_format($data['factura']->csm_act_promedio, 0, ',', '.');
+
+        $data['factura']->csm_rea_promedio =
+        	number_format($data['factura']->csm_rea_promedio, 0, ',', '.');
+
+    	self::view()->render('csmoavg', $data);
     }
 
     private function bill($id_cliente) {

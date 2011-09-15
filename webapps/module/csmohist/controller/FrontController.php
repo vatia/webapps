@@ -16,13 +16,12 @@ class FrontController extends DooController {
                 $data['sess_id'] = Doo::session()->getId();
                 $data['baseurl'] = Doo::conf()->APP_URL;
 
-                // TODO: rango ciclos inicial
-                $data['ciclo_ini'] = '201107';
-                $data['ciclo_fin'] = '201108';
+                $data['ciclo_ini'] = date('Ym', mktime(0, 0, 0,
+                	date('m')-6, date('d'), date('Y')));
+                $data['ciclo_fin'] = date('Ym');
 
-                // TODO: rango ciclos min/max
-                $data['ciclo_ini_min'] = '201101';
-                $data['ciclo_fin_max'] = '201108';
+                $data['ciclo_ini_min'] = 201101;
+                $data['ciclo_fin_max'] = date('Ym');
 
                 $data['graph'] = 'global/img/graph-line.png';
 
@@ -44,11 +43,12 @@ class FrontController extends DooController {
             			$data['id_grupo'] = null;
             		}
             		$clientes = Doo::session()->get('clientes');
-            		if (is_array($clientes) && count($clientes) > 0) {
+            		$data['nroctes'] = count($clientes);
+            		if (is_array($clientes) && $data['nroctes'] > 0) {
                     	$data['clientes'] = $clientes;
             		}
                 }
-                self::view()->render('csmohist', $data);
+                self::view()->renderc('csmohist', $data);
 
             } else {
                 return array(Doo::conf()->APP_URL . 'login', 303);
