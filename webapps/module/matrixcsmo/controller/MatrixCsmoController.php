@@ -41,6 +41,8 @@ class MatrixCsmoController extends DooController {
                                 $this->fecha_fin),
                     'asc' => 'fecha'));
 
+        Doo::session()->matrix_act = $data['matrix'];
+
         if (is_array($data['matrix']) && count($data['matrix']) > 0) {
         	for ($i=0; $i<count($data['matrix']); $i++) {
 	        	for($h = 1; $h <= 24; $h++) {
@@ -54,8 +56,6 @@ class MatrixCsmoController extends DooController {
 	        	}
 	        }
         }
-        Doo::session()->matrix_act = $data['matrix'];
-
         //self::view()->setTagClass('TemplateTag');
         $this->view()->render('act', $data);
     }
@@ -83,6 +83,8 @@ class MatrixCsmoController extends DooController {
                                 $this->fecha_fin),
                     'asc' => 'fecha'));
 
+        Doo::session()->matrix_rea = $data['matrix'];
+
         if (is_array($data['matrix']) && count($data['matrix']) > 0) {
         	for ($i=0; $i<count($data['matrix']); $i++) {
 	        	for($h = 1; $h <= 24; $h++) {
@@ -96,8 +98,6 @@ class MatrixCsmoController extends DooController {
 	        	}
 	        }
         }
-        Doo::session()->matrix_rea = $data['matrix'];
-
         self::view()->render('rea', $data);
     }
 
@@ -131,6 +131,8 @@ class MatrixCsmoController extends DooController {
                                 $this->fecha_fin),
                     'asc' => 'fecha'));
 
+        Doo::session()->matrix_pen = $data['matrix'];
+
         if (is_array($data['matrix']) && count($data['matrix']) > 0) {
 	        foreach ($data['matrix'] as $mtx) {
 	        	for($h = 1; $h <= 24; $h++) {
@@ -144,9 +146,6 @@ class MatrixCsmoController extends DooController {
 	        	}
 	        }
         }
-
-        Doo::session()->matrix_pen = $data['matrix'];
-
         self::view()->render('pen', $data);
     }
 
@@ -180,6 +179,8 @@ class MatrixCsmoController extends DooController {
                                 $this->fecha_fin),
                     'asc' => 'fecha'));
 
+        Doo::session()->matrix_fpo = $data['matrix'];
+
         if (is_array($data['matrix']) && count($data['matrix']) > 0) {
 	        foreach ($data['matrix'] as $mtx) {
 	        	for($h = 1; $h <= 24; $h++) {
@@ -193,9 +194,6 @@ class MatrixCsmoController extends DooController {
 	        	}
 	        }
         }
-
-        Doo::session()->matrix_fpo = $data['matrix'];
-
         self::view()->render('fpo', $data);
     }
 }

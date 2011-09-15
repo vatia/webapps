@@ -17,7 +17,7 @@ class FrontController extends DooController {
                 $data['baseurl'] = Doo::conf()->APP_URL;
 
                 $data['fecha_ini'] = date('Y-m-d', mktime(0, 0, 0,
-                	date('m')-1, date('d'), date('Y')));
+                	date('m'), 2, date('Y')));
                 $data['fecha_fin'] = date('Y-m-d');
 
                 $data['fecha_ini_min'] = '2011-01-02';

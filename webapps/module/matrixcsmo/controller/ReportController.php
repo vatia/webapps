@@ -29,6 +29,8 @@ class ReportController extends DooController {
         $csmos = preg_split('/[,\-]/',
             $this->params['csmotypes'], -1, PREG_SPLIT_NO_EMPTY);
 
+		$f = 2;
+
         if ($usrtype === 'corp') {
 
         	$clientes = Doo::session()->get('clientes');
@@ -36,257 +38,254 @@ class ReportController extends DooController {
         		$idx = 0;
         		foreach ($clientes as $cte) {
         			if (is_object($cte) && ($cte instanceof M02Clientes)) {
+        				if ($cte->id_cliente === $this->params['id']) {
 
-			            $f = 2;
+				            //$sheet = $excel->createSheet($idx++);
+				            $sheet = $excel->getActiveSheet();
 
-			            $sheet = $excel->createSheet($idx++);
-			            $sheet->setTitle($cte->id_cliente);
+				            $sheet->setTitle($cte->id_cliente);
+				            $sheet->setCellValue('A'.$f, $cte->nombre_facturacion);
 
-			            $sheet->setCellValue('A'.$f, $cte->nombre_facturacion);
+				            foreach ($csmos as $csmo) {
+				                switch ($csmo) {
 
-			            foreach ($csmos as $csmo) {
-			                switch ($csmo) {
+				                	////////////////////////////////////////////////
 
-			                	////////////////////////////////////////////////
+				                    case 'act':
+				                        $sheet->setCellValue('A'.($f+=2),
+				                        	'MATRIZ DE ENERGIA ACTIVA');
 
-			                    case 'act':
-			                        $sheet->setCellValue('A'.($f+=2),
-			                        	'MATRIZ DE ENERGIA ACTIVA');
+				                        $sheet->setCellValue('A'.($f+=2), 'FECHA');
+				                        for ($i = 1; $i<=24; $i++) {
+				                            $sheet->setCellValue($cols[$i].$f, 'H'.$i);
+				                        }
+				                        $sheet->setCellValue('Z'.$f++, 'CSMO_TOTAL_DIA');
 
-			                        $sheet->setCellValue('A'.($f+=2), 'FECHA');
-			                        for ($i = 1; $i<=24; $i++) {
-			                            $sheet->setCellValue($cols[$i].$f, 'H'.$i);
-			                        }
-			                        $sheet->setCellValue('Z'.$f++, 'CSMO_TOTAL_DIA');
+				                        $mtx_act = Doo::session()->get('matrix_act');
 
-			                        $mtx_act = Doo::session()->get('matrix_act');
+				                        if (is_array($mtx_act) && count($mtx_act) > 0) {
+				                            foreach ($mtx_act as $mtx) {
+				                                $sheet->setCellValue('A'.$f, $mtx->fecha)
+				                                    ->setCellValue('B'.$f, $mtx->h01a)
+				                                    ->setCellValue('C'.$f, $mtx->h02a)
+				                                    ->setCellValue('D'.$f, $mtx->h03a)
+				                                    ->setCellValue('E'.$f, $mtx->h04a)
+				                                    ->setCellValue('F'.$f, $mtx->h05a)
+				                                    ->setCellValue('G'.$f, $mtx->h06a)
+				                                    ->setCellValue('H'.$f, $mtx->h07a)
+				                                    ->setCellValue('I'.$f, $mtx->h08a)
+				                                    ->setCellValue('J'.$f, $mtx->h09a)
+				                                    ->setCellValue('K'.$f, $mtx->h10a)
+				                                    ->setCellValue('L'.$f, $mtx->h11a)
+				                                    ->setCellValue('M'.$f, $mtx->h12a)
+				                                    ->setCellValue('N'.$f, $mtx->h13a)
+				                                    ->setCellValue('O'.$f, $mtx->h14a)
+				                                    ->setCellValue('P'.$f, $mtx->h15a)
+				                                    ->setCellValue('Q'.$f, $mtx->h16a)
+				                                    ->setCellValue('R'.$f, $mtx->h17a)
+				                                    ->setCellValue('S'.$f, $mtx->h18a)
+				                                    ->setCellValue('T'.$f, $mtx->h19a)
+				                                    ->setCellValue('U'.$f, $mtx->h20a)
+				                                    ->setCellValue('V'.$f, $mtx->h21a)
+				                                    ->setCellValue('W'.$f, $mtx->h22a)
+				                                    ->setCellValue('X'.$f, $mtx->h23a)
+				                                    ->setCellValue('Y'.$f, $mtx->h24a)
+				                                    ->setCellValue('Z'.$f,
+				                                    	'=SUM(B'.$f.':Y'.$f++.')');
+				                            }
+				                            $sheet->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
 
-			                        if (is_array($mtx_act) && count($mtx_act) > 0) {
-			                            foreach ($mtx_act as $mtx) {
-			                                $sheet->setCellValue('A'.$f, $mtx->fecha)
-			                                    ->setCellValue('B'.$f, $mtx->h01a)
-			                                    ->setCellValue('C'.$f, $mtx->h02a)
-			                                    ->setCellValue('D'.$f, $mtx->h03a)
-			                                    ->setCellValue('E'.$f, $mtx->h04a)
-			                                    ->setCellValue('F'.$f, $mtx->h05a)
-			                                    ->setCellValue('G'.$f, $mtx->h06a)
-			                                    ->setCellValue('H'.$f, $mtx->h07a)
-			                                    ->setCellValue('I'.$f, $mtx->h08a)
-			                                    ->setCellValue('J'.$f, $mtx->h09a)
-			                                    ->setCellValue('K'.$f, $mtx->h10a)
-			                                    ->setCellValue('L'.$f, $mtx->h11a)
-			                                    ->setCellValue('M'.$f, $mtx->h12a)
-			                                    ->setCellValue('N'.$f, $mtx->h13a)
-			                                    ->setCellValue('O'.$f, $mtx->h14a)
-			                                    ->setCellValue('P'.$f, $mtx->h15a)
-			                                    ->setCellValue('Q'.$f, $mtx->h16a)
-			                                    ->setCellValue('R'.$f, $mtx->h17a)
-			                                    ->setCellValue('S'.$f, $mtx->h18a)
-			                                    ->setCellValue('T'.$f, $mtx->h19a)
-			                                    ->setCellValue('U'.$f, $mtx->h20a)
-			                                    ->setCellValue('V'.$f, $mtx->h21a)
-			                                    ->setCellValue('W'.$f, $mtx->h22a)
-			                                    ->setCellValue('X'.$f, $mtx->h23a)
-			                                    ->setCellValue('Y'.$f, $mtx->h24a)
-			                                    ->setCellValue('Z'.$f,
-			                                    	'=SUM(B'.$f.':Y'.$f++.')');
-			                            }
-			                            $sheet->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
+				                            for ($i = 1; $i<=24; $i++) {
+				                                $sheet->setCellValue($cols[$i].$f,
+			                                		'=SUM('.$cols[$i].($f-count($mtx_act)).
+			                                			':'.$cols[$i].($f-1).')');
+				                            }
+				                            $sheet->setCellValue('Y'.$f, 'CSMO_TOTAL');
 
-			                            for ($i = 1; $i<=24; $i++) {
-			                                $sheet->setCellValue($cols[$i].$f,
-		                                		'=SUM('.$cols[$i].($f-count($mtx_act)).
-		                                			':'.$cols[$i].($f-1).')');
-			                            }
-			                            $sheet->setCellValue('Y'.$f, 'CSMO_TOTAL');
+				                            $sheet->setCellValue('Z'.$f, '=SUM(Z'.
+				                            	($f-count($mtx_act)).':Z'.($f-1).')');
+				                        }
+				                        break;
 
-			                            $sheet->setCellValue('Z'.$f, '=SUM(Z'.
-			                            	($f-count($mtx_act)).':Z'.($f-1).')');
-			                        }
+				                	////////////////////////////////////////////////
 
-			                        break;
+				                    case 'rea':
+				                        $sheet->setCellValue('A'.($f+=2),
+				                        	'MATRIZ DE ENERGIA REACTIVA');
 
-			                	////////////////////////////////////////////////
+				                        $sheet->setCellValue('A'.($f+=2), 'FECHA');
+				                        for ($i = 1; $i<=24; $i++) {
+				                            $sheet->setCellValue($cols[$i].$f, 'H'.$i);
+				                        }
+				                        $sheet->setCellValue('Z'.$f++, 'CSMO_TOTAL_DIA');
 
-			                    case 'rea':
-			                        $sheet->setCellValue('A'.($f+=2),
-			                        	'MATRIZ DE ENERGIA REACTIVA');
+				                        $mtx_rea = Doo::session()->get('matrix_rea');
 
-			                        $sheet->setCellValue('A'.($f+=2), 'FECHA');
-			                        for ($i = 1; $i<=24; $i++) {
-			                            $sheet->setCellValue($cols[$i].$f, 'H'.$i);
-			                        }
-			                        $sheet->setCellValue('Z'.$f++, 'CSMO_TOTAL_DIA');
+				                        if (is_array($mtx_rea) && count($mtx_rea) > 0) {
+				                            foreach ($mtx_rea as $mtx) {
+				                                $sheet->setCellValue('A'.$f, $mtx->fecha)
+				                                    ->setCellValue('B'.$f, $mtx->h01r)
+				                                    ->setCellValue('C'.$f, $mtx->h02r)
+				                                    ->setCellValue('D'.$f, $mtx->h03r)
+				                                    ->setCellValue('E'.$f, $mtx->h04r)
+				                                    ->setCellValue('F'.$f, $mtx->h05r)
+				                                    ->setCellValue('G'.$f, $mtx->h06r)
+				                                    ->setCellValue('H'.$f, $mtx->h07r)
+				                                    ->setCellValue('I'.$f, $mtx->h08r)
+				                                    ->setCellValue('J'.$f, $mtx->h09r)
+				                                    ->setCellValue('K'.$f, $mtx->h10r)
+				                                    ->setCellValue('L'.$f, $mtx->h11r)
+				                                    ->setCellValue('M'.$f, $mtx->h12r)
+				                                    ->setCellValue('N'.$f, $mtx->h13r)
+				                                    ->setCellValue('O'.$f, $mtx->h14r)
+				                                    ->setCellValue('P'.$f, $mtx->h15r)
+				                                    ->setCellValue('Q'.$f, $mtx->h16r)
+				                                    ->setCellValue('R'.$f, $mtx->h17r)
+				                                    ->setCellValue('S'.$f, $mtx->h18r)
+				                                    ->setCellValue('T'.$f, $mtx->h19r)
+				                                    ->setCellValue('U'.$f, $mtx->h20r)
+				                                    ->setCellValue('V'.$f, $mtx->h21r)
+				                                    ->setCellValue('W'.$f, $mtx->h22r)
+				                                    ->setCellValue('X'.$f, $mtx->h23r)
+				                                    ->setCellValue('Y'.$f, $mtx->h24r)
+				                                    ->setCellValue('Z'.$f,
+				                                    	'=SUM(B'.$f.':Y'.$f++.')');
+				                            }
+				                            $sheet->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
 
-			                        $mtx_rea = Doo::session()->get('matrix_rea');
+				                            for ($i = 1; $i<=24; $i++) {
+				                                $sheet->setCellValue($cols[$i].$f,
+			                                		'=SUM('.$cols[$i].($f-count($mtx_rea)).
+			                                			':'.$cols[$i].($f-1).')');
+				                            }
+				                            $sheet->setCellValue('Y'.$f, 'CSMO_TOTAL');
 
-			                        if (is_array($mtx_rea) && count($mtx_rea) > 0) {
-			                            foreach ($mtx_rea as $mtx) {
-			                                $sheet->setCellValue('A'.$f, $mtx->fecha)
-			                                    ->setCellValue('B'.$f, $mtx->h01r)
-			                                    ->setCellValue('C'.$f, $mtx->h02r)
-			                                    ->setCellValue('D'.$f, $mtx->h03r)
-			                                    ->setCellValue('E'.$f, $mtx->h04r)
-			                                    ->setCellValue('F'.$f, $mtx->h05r)
-			                                    ->setCellValue('G'.$f, $mtx->h06r)
-			                                    ->setCellValue('H'.$f, $mtx->h07r)
-			                                    ->setCellValue('I'.$f, $mtx->h08r)
-			                                    ->setCellValue('J'.$f, $mtx->h09r)
-			                                    ->setCellValue('K'.$f, $mtx->h10r)
-			                                    ->setCellValue('L'.$f, $mtx->h11r)
-			                                    ->setCellValue('M'.$f, $mtx->h12r)
-			                                    ->setCellValue('N'.$f, $mtx->h13r)
-			                                    ->setCellValue('O'.$f, $mtx->h14r)
-			                                    ->setCellValue('P'.$f, $mtx->h15r)
-			                                    ->setCellValue('Q'.$f, $mtx->h16r)
-			                                    ->setCellValue('R'.$f, $mtx->h17r)
-			                                    ->setCellValue('S'.$f, $mtx->h18r)
-			                                    ->setCellValue('T'.$f, $mtx->h19r)
-			                                    ->setCellValue('U'.$f, $mtx->h20r)
-			                                    ->setCellValue('V'.$f, $mtx->h21r)
-			                                    ->setCellValue('W'.$f, $mtx->h22r)
-			                                    ->setCellValue('X'.$f, $mtx->h23r)
-			                                    ->setCellValue('Y'.$f, $mtx->h24r)
-			                                    ->setCellValue('Z'.$f,
-			                                    	'=SUM(B'.$f.':Y'.$f++.')');
-			                            }
-			                            $sheet->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
+				                            $sheet->setCellValue('Z'.$f, '=SUM(Z'.
+				                            	($f-count($mtx_rea)).':Z'.($f-1).')');
+				                        }
+				                        break;
 
-			                            for ($i = 1; $i<=24; $i++) {
-			                                $sheet->setCellValue($cols[$i].$f,
-		                                		'=SUM('.$cols[$i].($f-count($mtx_rea)).
-		                                			':'.$cols[$i].($f-1).')');
-			                            }
-			                            $sheet->setCellValue('Y'.$f, 'CSMO_TOTAL');
+				                	////////////////////////////////////////////////
 
-			                            $sheet->setCellValue('Z'.$f, '=SUM(Z'.
-			                            	($f-count($mtx_rea)).':Z'.($f-1).')');
-			                        }
+				                    case 'pen':
+				                        $sheet->setCellValue('A'.($f+=2),
+				                        	'MATRIZ DE ENERGIA PENALIZADA');
 
-			                        break;
+				                        $sheet->setCellValue('A'.($f+=2), 'FECHA');
+				                        for ($i = 1; $i<=24; $i++) {
+				                            $sheet->setCellValue($cols[$i].$f, 'H'.$i);
+				                        }
+				                        $sheet->setCellValue('Z'.$f++, 'CSMO_TOTAL_DIA');
 
-			                	////////////////////////////////////////////////
+				                        $mtx_pen = Doo::session()->get('matrix_pen');
 
-			                    case 'pen':
-			                        $sheet->setCellValue('A'.($f+=2),
-			                        	'MATRIZ DE ENERGIA PENALIZADA');
+				                        if (is_array($mtx_pen) && count($mtx_pen) > 0) {
+				                            foreach ($mtx_pen as $mtx) {
+				                                $sheet->setCellValue('A'.$f, $mtx->fecha)
+				                                    ->setCellValue('B'.$f, $mtx->h01a)
+				                                    ->setCellValue('C'.$f, $mtx->h02a)
+				                                    ->setCellValue('D'.$f, $mtx->h03a)
+				                                    ->setCellValue('E'.$f, $mtx->h04a)
+				                                    ->setCellValue('F'.$f, $mtx->h05a)
+				                                    ->setCellValue('G'.$f, $mtx->h06a)
+				                                    ->setCellValue('H'.$f, $mtx->h07a)
+				                                    ->setCellValue('I'.$f, $mtx->h08a)
+				                                    ->setCellValue('J'.$f, $mtx->h09a)
+				                                    ->setCellValue('K'.$f, $mtx->h10a)
+				                                    ->setCellValue('L'.$f, $mtx->h11a)
+				                                    ->setCellValue('M'.$f, $mtx->h12a)
+				                                    ->setCellValue('N'.$f, $mtx->h13a)
+				                                    ->setCellValue('O'.$f, $mtx->h14a)
+				                                    ->setCellValue('P'.$f, $mtx->h15a)
+				                                    ->setCellValue('Q'.$f, $mtx->h16a)
+				                                    ->setCellValue('R'.$f, $mtx->h17a)
+				                                    ->setCellValue('S'.$f, $mtx->h18a)
+				                                    ->setCellValue('T'.$f, $mtx->h19a)
+				                                    ->setCellValue('U'.$f, $mtx->h20a)
+				                                    ->setCellValue('V'.$f, $mtx->h21a)
+				                                    ->setCellValue('W'.$f, $mtx->h22a)
+				                                    ->setCellValue('X'.$f, $mtx->h23a)
+				                                    ->setCellValue('Y'.$f, $mtx->h24a)
+				                                    ->setCellValue('Z'.$f,
+				                                    	'=SUM(B'.$f.':Y'.$f++.')');
+				                            }
+				                            $sheet->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
 
-			                        $sheet->setCellValue('A'.($f+=2), 'FECHA');
-			                        for ($i = 1; $i<=24; $i++) {
-			                            $sheet->setCellValue($cols[$i].$f, 'H'.$i);
-			                        }
-			                        $sheet->setCellValue('Z'.$f++, 'CSMO_TOTAL_DIA');
+				                            for ($i = 1; $i<=24; $i++) {
+				                                $sheet->setCellValue($cols[$i].$f,
+			                                		'=SUM('.$cols[$i].($f-count($mtx_pen)).
+			                                			':'.$cols[$i].($f-1).')');
+				                            }
+				                            $sheet->setCellValue('Y'.$f, 'CSMO_TOTAL');
 
-			                        $mtx_pen = Doo::session()->get('matrix_pen');
+				                            $sheet->setCellValue('Z'.$f, '=SUM(Z'.
+				                            	($f-count($mtx_pen)).':Z'.($f-1).')');
+				                        }
+				                        break;
 
-			                        if (is_array($mtx_pen) && count($mtx_pen) > 0) {
-			                            foreach ($mtx_pen as $mtx) {
-			                                $sheet->setCellValue('A'.$f, $mtx->fecha)
-			                                    ->setCellValue('B'.$f, $mtx->h01a)
-			                                    ->setCellValue('C'.$f, $mtx->h02a)
-			                                    ->setCellValue('D'.$f, $mtx->h03a)
-			                                    ->setCellValue('E'.$f, $mtx->h04a)
-			                                    ->setCellValue('F'.$f, $mtx->h05a)
-			                                    ->setCellValue('G'.$f, $mtx->h06a)
-			                                    ->setCellValue('H'.$f, $mtx->h07a)
-			                                    ->setCellValue('I'.$f, $mtx->h08a)
-			                                    ->setCellValue('J'.$f, $mtx->h09a)
-			                                    ->setCellValue('K'.$f, $mtx->h10a)
-			                                    ->setCellValue('L'.$f, $mtx->h11a)
-			                                    ->setCellValue('M'.$f, $mtx->h12a)
-			                                    ->setCellValue('N'.$f, $mtx->h13a)
-			                                    ->setCellValue('O'.$f, $mtx->h14a)
-			                                    ->setCellValue('P'.$f, $mtx->h15a)
-			                                    ->setCellValue('Q'.$f, $mtx->h16a)
-			                                    ->setCellValue('R'.$f, $mtx->h17a)
-			                                    ->setCellValue('S'.$f, $mtx->h18a)
-			                                    ->setCellValue('T'.$f, $mtx->h19a)
-			                                    ->setCellValue('U'.$f, $mtx->h20a)
-			                                    ->setCellValue('V'.$f, $mtx->h21a)
-			                                    ->setCellValue('W'.$f, $mtx->h22a)
-			                                    ->setCellValue('X'.$f, $mtx->h23a)
-			                                    ->setCellValue('Y'.$f, $mtx->h24a)
-			                                    ->setCellValue('Z'.$f,
-			                                    	'=SUM(B'.$f.':Y'.$f++.')');
-			                            }
-			                            $sheet->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
+				                	////////////////////////////////////////////////
 
-			                            for ($i = 1; $i<=24; $i++) {
-			                                $sheet->setCellValue($cols[$i].$f,
-		                                		'=SUM('.$cols[$i].($f-count($mtx_pen)).
-		                                			':'.$cols[$i].($f-1).')');
-			                            }
-			                            $sheet->setCellValue('Y'.$f, 'CSMO_TOTAL');
+				                    case 'fpo':
+				                        $sheet->setCellValue('A'.($f+=2),
+				                        	'MATRIZ FACTOR DE POTENCIA');
 
-			                            $sheet->setCellValue('Z'.$f, '=SUM(Z'.
-			                            	($f-count($mtx_pen)).':Z'.($f-1).')');
-			                        }
+				                        $sheet->setCellValue('A'.($f+=2), 'FECHA');
+				                        for ($i = 1; $i<=24; $i++) {
+				                            $sheet->setCellValue($cols[$i].$f, 'H'.$i);
+				                        }
+				                        $sheet->setCellValue('Z'.$f++, 'CSMO_TOTAL_DIA');
 
-			                        break;
+				                        $mtx_fpo = Doo::session()->get('matrix_fpo');
 
-			                	////////////////////////////////////////////////
+				                        if (is_array($mtx_fpo) && count($mtx_fpo) > 0) {
+				                            foreach ($mtx_fpo as $mtx) {
+				                                $sheet->setCellValue('A'.$f, $mtx->fecha)
+				                                    ->setCellValue('B'.$f, $mtx->h01a)
+				                                    ->setCellValue('C'.$f, $mtx->h02a)
+				                                    ->setCellValue('D'.$f, $mtx->h03a)
+				                                    ->setCellValue('E'.$f, $mtx->h04a)
+				                                    ->setCellValue('F'.$f, $mtx->h05a)
+				                                    ->setCellValue('G'.$f, $mtx->h06a)
+				                                    ->setCellValue('H'.$f, $mtx->h07a)
+				                                    ->setCellValue('I'.$f, $mtx->h08a)
+				                                    ->setCellValue('J'.$f, $mtx->h09a)
+				                                    ->setCellValue('K'.$f, $mtx->h10a)
+				                                    ->setCellValue('L'.$f, $mtx->h11a)
+				                                    ->setCellValue('M'.$f, $mtx->h12a)
+				                                    ->setCellValue('N'.$f, $mtx->h13a)
+				                                    ->setCellValue('O'.$f, $mtx->h14a)
+				                                    ->setCellValue('P'.$f, $mtx->h15a)
+				                                    ->setCellValue('Q'.$f, $mtx->h16a)
+				                                    ->setCellValue('R'.$f, $mtx->h17a)
+				                                    ->setCellValue('S'.$f, $mtx->h18a)
+				                                    ->setCellValue('T'.$f, $mtx->h19a)
+				                                    ->setCellValue('U'.$f, $mtx->h20a)
+				                                    ->setCellValue('V'.$f, $mtx->h21a)
+				                                    ->setCellValue('W'.$f, $mtx->h22a)
+				                                    ->setCellValue('X'.$f, $mtx->h23a)
+				                                    ->setCellValue('Y'.$f, $mtx->h24a)
+				                                    ->setCellValue('Z'.$f,
+				                                    	'=SUM(B'.$f.':Y'.$f++.')');
+				                            }
+				                            $sheet->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
 
-			                    case 'fpo':
-			                        $sheet->setCellValue('A'.($f+=2),
-			                        	'MATRIZ FACTOR DE POTENCIA');
+				                            for ($i = 1; $i<=24; $i++) {
+				                                $sheet->setCellValue($cols[$i].$f,
+			                                		'=SUM('.$cols[$i].($f-count($mtx_fpo)).
+			                                			':'.$cols[$i].($f-1).')');
+				                            }
+				                            $sheet->setCellValue('Y'.$f, 'CSMO_TOTAL');
 
-			                        $sheet->setCellValue('A'.($f+=2), 'FECHA');
-			                        for ($i = 1; $i<=24; $i++) {
-			                            $sheet->setCellValue($cols[$i].$f, 'H'.$i);
-			                        }
-			                        $sheet->setCellValue('Z'.$f++, 'CSMO_TOTAL_DIA');
-
-			                        $mtx_fpo = Doo::session()->get('matrix_fpo');
-
-			                        if (is_array($mtx_fpo) && count($mtx_fpo) > 0) {
-			                            foreach ($mtx_fpo as $mtx) {
-			                                $sheet->setCellValue('A'.$f, $mtx->fecha)
-			                                    ->setCellValue('B'.$f, $mtx->h01a)
-			                                    ->setCellValue('C'.$f, $mtx->h02a)
-			                                    ->setCellValue('D'.$f, $mtx->h03a)
-			                                    ->setCellValue('E'.$f, $mtx->h04a)
-			                                    ->setCellValue('F'.$f, $mtx->h05a)
-			                                    ->setCellValue('G'.$f, $mtx->h06a)
-			                                    ->setCellValue('H'.$f, $mtx->h07a)
-			                                    ->setCellValue('I'.$f, $mtx->h08a)
-			                                    ->setCellValue('J'.$f, $mtx->h09a)
-			                                    ->setCellValue('K'.$f, $mtx->h10a)
-			                                    ->setCellValue('L'.$f, $mtx->h11a)
-			                                    ->setCellValue('M'.$f, $mtx->h12a)
-			                                    ->setCellValue('N'.$f, $mtx->h13a)
-			                                    ->setCellValue('O'.$f, $mtx->h14a)
-			                                    ->setCellValue('P'.$f, $mtx->h15a)
-			                                    ->setCellValue('Q'.$f, $mtx->h16a)
-			                                    ->setCellValue('R'.$f, $mtx->h17a)
-			                                    ->setCellValue('S'.$f, $mtx->h18a)
-			                                    ->setCellValue('T'.$f, $mtx->h19a)
-			                                    ->setCellValue('U'.$f, $mtx->h20a)
-			                                    ->setCellValue('V'.$f, $mtx->h21a)
-			                                    ->setCellValue('W'.$f, $mtx->h22a)
-			                                    ->setCellValue('X'.$f, $mtx->h23a)
-			                                    ->setCellValue('Y'.$f, $mtx->h24a)
-			                                    ->setCellValue('Z'.$f,
-			                                    	'=SUM(B'.$f.':Y'.$f++.')');
-			                            }
-			                            $sheet->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
-
-			                            for ($i = 1; $i<=24; $i++) {
-			                                $sheet->setCellValue($cols[$i].$f,
-		                                		'=SUM('.$cols[$i].($f-count($mtx_fpo)).
-		                                			':'.$cols[$i].($f-1).')');
-			                            }
-			                            $sheet->setCellValue('Y'.$f, 'CSMO_TOTAL');
-
-			                            $sheet->setCellValue('Z'.$f, '=SUM(Z'.
-			                            	($f-count($mtx_fpo)).':Z'.($f-1).')');
-			                        }
-
-			                        break;
-			                }
-
-			            }
+				                            $sheet->setCellValue('Z'.$f, '=SUM(Z'.
+				                            	($f-count($mtx_fpo)).':Z'.($f-1).')');
+				                        }
+				                        break;
+				                }
+				            }
+        					break;
+        				}
+	        			$excel->setActiveSheetIndex(0);
         			}
-        			$excel->setActiveSheetIndex(0);
         		}
         	}
 
@@ -294,306 +293,257 @@ class ReportController extends DooController {
 
         } else {
 
-            $f = 4;
+            $cte = Doo::session()->get('cte');
 
-            $excel->getActiveSheet()->setTitle($this->params['id']);
+            if (is_object($cte) && ($cte instanceof M02Clientes)) {
 
-            foreach ($csmos as $csmo) {
-                switch ($csmo) {
+            	$sheet = $excel->getActiveSheet();
 
-			        ////////////////////////////////////////////////////////////
+	            $sheet->setTitle($cte->id_cliente);
+	            $sheet->setCellValue('A'.$f, $cte->nombre_facturacion);
 
-                    case 'act':
-                        $excel->setActiveSheetIndex(0)
-                            ->setCellValue('A1', 'MATRIZ DE ENERGIA ACTIVA');
+	            foreach ($csmos as $csmo) {
+	                switch ($csmo) {
 
-                        $excel->setActiveSheetIndex(0)
-                            ->setCellValue('A3', 'FECHA');
-                        for ($i = 1; $i<=24; $i++) {
-                            $excel->setActiveSheetIndex(0)
-                                ->setCellValue($cols[$i].'3', 'H'.$i);
-                        }
-                        $excel->setActiveSheetIndex(0)
-                            ->setCellValue('Z3', 'CSMO_TOTAL_DIA');
+				        ////////////////////////////////////////////////////////////
 
-                        $mtx_act = Doo::session()->get('matrix_act');
+	                    case 'act':
+	                        $sheet->setCellValue('A'.($f+=2),
+	                        	'MATRIZ DE ENERGIA ACTIVA');
 
-                        if (is_array($mtx_act)) {
-                            foreach ($mtx_act as $mtx) {
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue('A'.$f, $mtx->fecha);
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue('B'.$f, $mtx->h01a)
-                                    ->setCellValue('C'.$f, $mtx->h02a)
-                                    ->setCellValue('D'.$f, $mtx->h03a)
-                                    ->setCellValue('E'.$f, $mtx->h04a)
-                                    ->setCellValue('F'.$f, $mtx->h05a)
-                                    ->setCellValue('G'.$f, $mtx->h06a)
-                                    ->setCellValue('H'.$f, $mtx->h07a)
-                                    ->setCellValue('I'.$f, $mtx->h08a)
-                                    ->setCellValue('J'.$f, $mtx->h09a)
-                                    ->setCellValue('K'.$f, $mtx->h10a)
-                                    ->setCellValue('L'.$f, $mtx->h11a)
-                                    ->setCellValue('M'.$f, $mtx->h12a)
-                                    ->setCellValue('N'.$f, $mtx->h13a)
-                                    ->setCellValue('O'.$f, $mtx->h14a)
-                                    ->setCellValue('P'.$f, $mtx->h15a)
-                                    ->setCellValue('Q'.$f, $mtx->h16a)
-                                    ->setCellValue('R'.$f, $mtx->h17a)
-                                    ->setCellValue('S'.$f, $mtx->h18a)
-                                    ->setCellValue('T'.$f, $mtx->h19a)
-                                    ->setCellValue('U'.$f, $mtx->h20a)
-                                    ->setCellValue('V'.$f, $mtx->h21a)
-                                    ->setCellValue('W'.$f, $mtx->h22a)
-                                    ->setCellValue('X'.$f, $mtx->h23a)
-                                    ->setCellValue('Y'.$f, $mtx->h24a);
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue('Z'.$f,
-                                    	'=SUM(B'.$f.':Y'.$f.')');
-                                $f++;
-                            }
+	                        $sheet->setCellValue('A'.($f+=2), 'FECHA');
+	                        for ($i = 1; $i<=24; $i++) {
+	                            $sheet->setCellValue($cols[$i].$f, 'H'.$i);
+	                        }
+	                        $sheet->setCellValue('Z'.$f++, 'CSMO_TOTAL_DIA');
 
-                            $excel->setActiveSheetIndex(0)
-                                ->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
+	                        $mtx_act = Doo::session()->get('matrix_act');
 
-                            for ($i = 1; $i<=24; $i++) {
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue($cols[$i].$f,
+	                        if (is_array($mtx_act) && count($mtx_act) > 0) {
+	                            foreach ($mtx_act as $mtx) {
+	                                $sheet->setCellValue('A'.$f, $mtx->fecha)
+	                                    ->setCellValue('B'.$f, $mtx->h01a)
+	                                    ->setCellValue('C'.$f, $mtx->h02a)
+	                                    ->setCellValue('D'.$f, $mtx->h03a)
+	                                    ->setCellValue('E'.$f, $mtx->h04a)
+	                                    ->setCellValue('F'.$f, $mtx->h05a)
+	                                    ->setCellValue('G'.$f, $mtx->h06a)
+	                                    ->setCellValue('H'.$f, $mtx->h07a)
+	                                    ->setCellValue('I'.$f, $mtx->h08a)
+	                                    ->setCellValue('J'.$f, $mtx->h09a)
+	                                    ->setCellValue('K'.$f, $mtx->h10a)
+	                                    ->setCellValue('L'.$f, $mtx->h11a)
+	                                    ->setCellValue('M'.$f, $mtx->h12a)
+	                                    ->setCellValue('N'.$f, $mtx->h13a)
+	                                    ->setCellValue('O'.$f, $mtx->h14a)
+	                                    ->setCellValue('P'.$f, $mtx->h15a)
+	                                    ->setCellValue('Q'.$f, $mtx->h16a)
+	                                    ->setCellValue('R'.$f, $mtx->h17a)
+	                                    ->setCellValue('S'.$f, $mtx->h18a)
+	                                    ->setCellValue('T'.$f, $mtx->h19a)
+	                                    ->setCellValue('U'.$f, $mtx->h20a)
+	                                    ->setCellValue('V'.$f, $mtx->h21a)
+	                                    ->setCellValue('W'.$f, $mtx->h22a)
+	                                    ->setCellValue('X'.$f, $mtx->h23a)
+	                                    ->setCellValue('Y'.$f, $mtx->h24a)
+	                                    ->setCellValue('Z'.$f,
+	                                    	'=SUM(B'.$f.':Y'.$f++.')');
+	                            }
+	                            $sheet->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
+
+	                            for ($i = 1; $i<=24; $i++) {
+	                                $sheet->setCellValue($cols[$i].$f,
                                 		'=SUM('.$cols[$i].($f-count($mtx_act)).
                                 			':'.$cols[$i].($f-1).')');
-                            }
+	                            }
+	                            $sheet->setCellValue('Y'.$f, 'CSMO_TOTAL');
+	                            $sheet->setCellValue('Z'.$f, '=SUM(Z'.
+	                            	($f-count($mtx_act)).':Z'.($f-1).')');
+	                        }
+	                        break;
 
-                            /* $excel->setActiveSheetIndex(0)
-                                ->setCellValue('Y'.$f, 'CSMO_TOTAL'); */
+				        ////////////////////////////////////////////////////////////
 
-                            $excel->setActiveSheetIndex(0)->setCellValue('Z'.$f,
-                            	'=SUM(Z'.($f-count($mtx_act)).':Z'.($f-1).')');
-                        }
+	                    case 'rea':
+	                        $sheet->setCellValue('A'.($f+=2),
+	                        	'MATRIZ DE ENERGIA REACTIVA');
 
-                        break;
+	                        $sheet->setCellValue('A'.($f+=2), 'FECHA');
+	                        for ($i = 1; $i<=24; $i++) {
+	                            $sheet->setCellValue($cols[$i].$f, 'H'.$i);
+	                        }
+	                        $sheet->setCellValue('Z'.$f++, 'CSMO_TOTAL_DIA');
 
-			        ////////////////////////////////////////////////////////////
+	                        $mtx_rea = Doo::session()->get('matrix_rea');
 
-                    case 'rea':
-                        $excel->setActiveSheetIndex(0)
-                            ->setCellValue('A1', 'MATRIZ DE ENERGIA REACTIVA');
+	                        if (is_array($mtx_rea) && count($mtx_rea) > 0) {
+	                            foreach ($mtx_rea as $mtx) {
+	                                $sheet->setCellValue('A'.$f, $mtx->fecha)
+	                                    ->setCellValue('B'.$f, $mtx->h01r)
+	                                    ->setCellValue('C'.$f, $mtx->h02r)
+	                                    ->setCellValue('D'.$f, $mtx->h03r)
+	                                    ->setCellValue('E'.$f, $mtx->h04r)
+	                                    ->setCellValue('F'.$f, $mtx->h05r)
+	                                    ->setCellValue('G'.$f, $mtx->h06r)
+	                                    ->setCellValue('H'.$f, $mtx->h07r)
+	                                    ->setCellValue('I'.$f, $mtx->h08r)
+	                                    ->setCellValue('J'.$f, $mtx->h09r)
+	                                    ->setCellValue('K'.$f, $mtx->h10r)
+	                                    ->setCellValue('L'.$f, $mtx->h11r)
+	                                    ->setCellValue('M'.$f, $mtx->h12r)
+	                                    ->setCellValue('N'.$f, $mtx->h13r)
+	                                    ->setCellValue('O'.$f, $mtx->h14r)
+	                                    ->setCellValue('P'.$f, $mtx->h15r)
+	                                    ->setCellValue('Q'.$f, $mtx->h16r)
+	                                    ->setCellValue('R'.$f, $mtx->h17r)
+	                                    ->setCellValue('S'.$f, $mtx->h18r)
+	                                    ->setCellValue('T'.$f, $mtx->h19r)
+	                                    ->setCellValue('U'.$f, $mtx->h20r)
+	                                    ->setCellValue('V'.$f, $mtx->h21r)
+	                                    ->setCellValue('W'.$f, $mtx->h22r)
+	                                    ->setCellValue('X'.$f, $mtx->h23r)
+	                                    ->setCellValue('Y'.$f, $mtx->h24r)
+	                                    ->setCellValue('Z'.$f,
+	                                    	'=SUM(B'.$f.':Y'.$f++.')');
+	                            }
+	                            $sheet->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
 
-                        $excel->setActiveSheetIndex(0)
-                            ->setCellValue('A3', 'FECHA');
-                        for ($i = 1; $i<=24; $i++) {
-                            $excel->setActiveSheetIndex(0)
-                                ->setCellValue($cols[$i].'3', 'H'.$i);
-                        }
-                        $excel->setActiveSheetIndex(0)
-                            ->setCellValue('Z3', 'CSMO_TOTAL_DIA');
-
-                        $mtx_rea = Doo::session()->get('matrix_rea');
-
-                        if (is_array($mtx_rea)) {
-                            foreach ($mtx_rea as $mtx) {
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue('A'.$f, $mtx->fecha);
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue('B'.$f, $mtx->h01r)
-                                    ->setCellValue('C'.$f, $mtx->h02r)
-                                    ->setCellValue('D'.$f, $mtx->h03r)
-                                    ->setCellValue('E'.$f, $mtx->h04r)
-                                    ->setCellValue('F'.$f, $mtx->h05r)
-                                    ->setCellValue('G'.$f, $mtx->h06r)
-                                    ->setCellValue('H'.$f, $mtx->h07r)
-                                    ->setCellValue('I'.$f, $mtx->h08r)
-                                    ->setCellValue('J'.$f, $mtx->h09r)
-                                    ->setCellValue('K'.$f, $mtx->h10r)
-                                    ->setCellValue('L'.$f, $mtx->h11r)
-                                    ->setCellValue('M'.$f, $mtx->h12r)
-                                    ->setCellValue('N'.$f, $mtx->h13r)
-                                    ->setCellValue('O'.$f, $mtx->h14r)
-                                    ->setCellValue('P'.$f, $mtx->h15r)
-                                    ->setCellValue('Q'.$f, $mtx->h16r)
-                                    ->setCellValue('R'.$f, $mtx->h17r)
-                                    ->setCellValue('S'.$f, $mtx->h18r)
-                                    ->setCellValue('T'.$f, $mtx->h19r)
-                                    ->setCellValue('U'.$f, $mtx->h20r)
-                                    ->setCellValue('V'.$f, $mtx->h21r)
-                                    ->setCellValue('W'.$f, $mtx->h22r)
-                                    ->setCellValue('X'.$f, $mtx->h23r)
-                                    ->setCellValue('Y'.$f, $mtx->h24r);
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue('Z'.$f,
-                                    	'=SUM(B'.$f.':Y'.$f.')');
-                                $f++;
-                            }
-
-                            $excel->setActiveSheetIndex(0)
-                                ->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
-
-                            for ($i = 1; $i<=24; $i++) {
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue($cols[$i].$f,
+	                            for ($i = 1; $i<=24; $i++) {
+	                                $sheet->setCellValue($cols[$i].$f,
                                 		'=SUM('.$cols[$i].($f-count($mtx_rea)).
                                 			':'.$cols[$i].($f-1).')');
-                            }
+	                            }
+	                            $sheet->setCellValue('Y'.$f, 'CSMO_TOTAL');
 
-                            /* $excel->setActiveSheetIndex(0)
-                                ->setCellValue('Y'.$f, 'CSMO_TOTAL'); */
+	                            $sheet->setCellValue('Z'.$f, '=SUM(Z'.
+	                            	($f-count($mtx_rea)).':Z'.($f-1).')');
+	                        }
+	                        break;
 
-                            $excel->setActiveSheetIndex(0)->setCellValue('Z'.$f,
-                            	'=SUM(Z'.($f-count($mtx_rea)).':Z'.($f-1).')');
-                        }
+				        ////////////////////////////////////////////////////////////
 
-                        break;
+	                    case 'pen':
+	                        $sheet->setCellValue('A'.($f+=2),
+	                        	'MATRIZ DE ENERGIA PENALIZADA');
 
-			        ////////////////////////////////////////////////////////////
+	                        $sheet->setCellValue('A'.($f+=2), 'FECHA');
+	                        for ($i = 1; $i<=24; $i++) {
+	                            $sheet->setCellValue($cols[$i].$f, 'H'.$i);
+	                        }
+	                        $sheet->setCellValue('Z'.$f, 'CSMO_TOTAL_DIA');
 
-                    case 'pen':
-                        $excel->setActiveSheetIndex(0)
-                            ->setCellValue('A1', 'MATRIZ DE ENERGIA PENALIZADA');
+	                        $mtx_pen = Doo::session()->get('matrix_pen');
 
-                        $excel->setActiveSheetIndex(0)
-                            ->setCellValue('A3', 'FECHA');
-                        for ($i = 1; $i<=24; $i++) {
-                            $excel->setActiveSheetIndex(0)
-                                ->setCellValue($cols[$i].'3', 'H'.$i);
-                        }
-                        $excel->setActiveSheetIndex(0)
-                            ->setCellValue('Z3', 'CSMO_TOTAL_DIA');
+	                        if (is_array($mtx_pen) && count($mtx_pen) > 0) {
+	                            foreach ($mtx_pen as $mtx) {
+	                                $sheet->setCellValue('A'.$f, $mtx->fecha)
+	                                    ->setCellValue('B'.$f, $mtx->h01a)
+	                                    ->setCellValue('C'.$f, $mtx->h02a)
+	                                    ->setCellValue('D'.$f, $mtx->h03a)
+	                                    ->setCellValue('E'.$f, $mtx->h04a)
+	                                    ->setCellValue('F'.$f, $mtx->h05a)
+	                                    ->setCellValue('G'.$f, $mtx->h06a)
+	                                    ->setCellValue('H'.$f, $mtx->h07a)
+	                                    ->setCellValue('I'.$f, $mtx->h08a)
+	                                    ->setCellValue('J'.$f, $mtx->h09a)
+	                                    ->setCellValue('K'.$f, $mtx->h10a)
+	                                    ->setCellValue('L'.$f, $mtx->h11a)
+	                                    ->setCellValue('M'.$f, $mtx->h12a)
+	                                    ->setCellValue('N'.$f, $mtx->h13a)
+	                                    ->setCellValue('O'.$f, $mtx->h14a)
+	                                    ->setCellValue('P'.$f, $mtx->h15a)
+	                                    ->setCellValue('Q'.$f, $mtx->h16a)
+	                                    ->setCellValue('R'.$f, $mtx->h17a)
+	                                    ->setCellValue('S'.$f, $mtx->h18a)
+	                                    ->setCellValue('T'.$f, $mtx->h19a)
+	                                    ->setCellValue('U'.$f, $mtx->h20a)
+	                                    ->setCellValue('V'.$f, $mtx->h21a)
+	                                    ->setCellValue('W'.$f, $mtx->h22a)
+	                                    ->setCellValue('X'.$f, $mtx->h23a)
+	                                    ->setCellValue('Y'.$f, $mtx->h24a)
+	                                    ->setCellValue('Z'.$f,
+	                                    	'=SUM(B'.$f.':Y'.$f++.')');
+	                            }
+	                            $sheet->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
 
-                        $mtx_pen = Doo::session()->get('matrix_pen');
-
-                        if (is_array($mtx_pen)) {
-                            foreach ($mtx_pen as $mtx) {
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue('A'.$f, $mtx->fecha);
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue('B'.$f, $mtx->h01a)
-                                    ->setCellValue('C'.$f, $mtx->h02a)
-                                    ->setCellValue('D'.$f, $mtx->h03a)
-                                    ->setCellValue('E'.$f, $mtx->h04a)
-                                    ->setCellValue('F'.$f, $mtx->h05a)
-                                    ->setCellValue('G'.$f, $mtx->h06a)
-                                    ->setCellValue('H'.$f, $mtx->h07a)
-                                    ->setCellValue('I'.$f, $mtx->h08a)
-                                    ->setCellValue('J'.$f, $mtx->h09a)
-                                    ->setCellValue('K'.$f, $mtx->h10a)
-                                    ->setCellValue('L'.$f, $mtx->h11a)
-                                    ->setCellValue('M'.$f, $mtx->h12a)
-                                    ->setCellValue('N'.$f, $mtx->h13a)
-                                    ->setCellValue('O'.$f, $mtx->h14a)
-                                    ->setCellValue('P'.$f, $mtx->h15a)
-                                    ->setCellValue('Q'.$f, $mtx->h16a)
-                                    ->setCellValue('R'.$f, $mtx->h17a)
-                                    ->setCellValue('S'.$f, $mtx->h18a)
-                                    ->setCellValue('T'.$f, $mtx->h19a)
-                                    ->setCellValue('U'.$f, $mtx->h20a)
-                                    ->setCellValue('V'.$f, $mtx->h21a)
-                                    ->setCellValue('W'.$f, $mtx->h22a)
-                                    ->setCellValue('X'.$f, $mtx->h23a)
-                                    ->setCellValue('Y'.$f, $mtx->h24a);
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue('Z'.$f,
-                                    	'=SUM(B'.$f.':Y'.$f.')');
-                                $f++;
-                            }
-
-                            $excel->setActiveSheetIndex(0)
-                                ->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
-
-                            for ($i = 1; $i<=24; $i++) {
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue($cols[$i].$f,
+	                            for ($i = 1; $i<=24; $i++) {
+	                                $sheet->setCellValue($cols[$i].$f,
                                 		'=SUM('.$cols[$i].($f-count($mtx_pen)).
                                 			':'.$cols[$i].($f-1).')');
-                            }
+	                            }
+	                            $sheet->setCellValue('Y'.$f, 'CSMO_TOTAL');
 
-                            /* $excel->setActiveSheetIndex(0)
-                                ->setCellValue('Y'.$f, 'CSMO_TOTAL'); */
+	                            $sheet->setCellValue('Z'.$f, '=SUM(Z'.
+	                            	($f-count($mtx_pen)).':Z'.($f-1).')');
+	                        }
+	                        break;
 
-                            $excel->setActiveSheetIndex(0)->setCellValue('Z'.$f,
-                            	'=SUM(Z'.($f-count($mtx_pen)).':Z'.($f-1).')');
-                        }
+				        ////////////////////////////////////////////////////////////
 
-                        break;
+	                    case 'fpo':
+	                        $sheet->setCellValue('A'.($f+=2),
+	                        	'MATRIZ FACTOR DE POTENCIA');
 
-			        ////////////////////////////////////////////////////////////
+	                        $sheet->setCellValue('A'.($f+=2), 'FECHA');
+	                        for ($i = 1; $i<=24; $i++) {
+	                            $sheet->setCellValue($cols[$i].$f, 'H'.$i);
+	                        }
+	                        $sheet->setCellValue('Z'.$f, 'CSMO_TOTAL_DIA');
 
-                    case 'fpo':
-                        $excel->setActiveSheetIndex(0)
-                            ->setCellValue('A1', 'MATRIZ FACTOR DE POTENCIA');
+	                        $mtx_fpo = Doo::session()->get('matrix_fpo');
 
-                        $excel->setActiveSheetIndex(0)
-                            ->setCellValue('A3', 'FECHA');
-                        for ($i = 1; $i<=24; $i++) {
-                            $excel->setActiveSheetIndex(0)
-                                ->setCellValue($cols[$i].'3', 'H'.$i);
-                        }
-                        $excel->setActiveSheetIndex(0)
-                            ->setCellValue('Z3', 'CSMO_TOTAL_DIA');
+	                        if (is_array($mtx_fpo) && count($mtx_fpo) > 0) {
+	                            foreach ($mtx_fpo as $mtx) {
+	                                $sheet->setCellValue('A'.$f, $mtx->fecha)
+	                                    ->setCellValue('B'.$f, $mtx->h01a)
+	                                    ->setCellValue('C'.$f, $mtx->h02a)
+	                                    ->setCellValue('D'.$f, $mtx->h03a)
+	                                    ->setCellValue('E'.$f, $mtx->h04a)
+	                                    ->setCellValue('F'.$f, $mtx->h05a)
+	                                    ->setCellValue('G'.$f, $mtx->h06a)
+	                                    ->setCellValue('H'.$f, $mtx->h07a)
+	                                    ->setCellValue('I'.$f, $mtx->h08a)
+	                                    ->setCellValue('J'.$f, $mtx->h09a)
+	                                    ->setCellValue('K'.$f, $mtx->h10a)
+	                                    ->setCellValue('L'.$f, $mtx->h11a)
+	                                    ->setCellValue('M'.$f, $mtx->h12a)
+	                                    ->setCellValue('N'.$f, $mtx->h13a)
+	                                    ->setCellValue('O'.$f, $mtx->h14a)
+	                                    ->setCellValue('P'.$f, $mtx->h15a)
+	                                    ->setCellValue('Q'.$f, $mtx->h16a)
+	                                    ->setCellValue('R'.$f, $mtx->h17a)
+	                                    ->setCellValue('S'.$f, $mtx->h18a)
+	                                    ->setCellValue('T'.$f, $mtx->h19a)
+	                                    ->setCellValue('U'.$f, $mtx->h20a)
+	                                    ->setCellValue('V'.$f, $mtx->h21a)
+	                                    ->setCellValue('W'.$f, $mtx->h22a)
+	                                    ->setCellValue('X'.$f, $mtx->h23a)
+	                                    ->setCellValue('Y'.$f, $mtx->h24a)
+	                                    ->setCellValue('Z'.$f,
+	                                    	'=SUM(B'.$f.':Y'.$f++.')');
+	                            }
+	                            $sheet->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
 
-                        $mtx_fpo = Doo::session()->get('matrix_fpo');
-
-                        if (is_array($mtx_fpo)) {
-                            foreach ($mtx_fpo as $mtx) {
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue('A'.$f, $mtx->fecha);
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue('B'.$f, $mtx->h01a)
-                                    ->setCellValue('C'.$f, $mtx->h02a)
-                                    ->setCellValue('D'.$f, $mtx->h03a)
-                                    ->setCellValue('E'.$f, $mtx->h04a)
-                                    ->setCellValue('F'.$f, $mtx->h05a)
-                                    ->setCellValue('G'.$f, $mtx->h06a)
-                                    ->setCellValue('H'.$f, $mtx->h07a)
-                                    ->setCellValue('I'.$f, $mtx->h08a)
-                                    ->setCellValue('J'.$f, $mtx->h09a)
-                                    ->setCellValue('K'.$f, $mtx->h10a)
-                                    ->setCellValue('L'.$f, $mtx->h11a)
-                                    ->setCellValue('M'.$f, $mtx->h12a)
-                                    ->setCellValue('N'.$f, $mtx->h13a)
-                                    ->setCellValue('O'.$f, $mtx->h14a)
-                                    ->setCellValue('P'.$f, $mtx->h15a)
-                                    ->setCellValue('Q'.$f, $mtx->h16a)
-                                    ->setCellValue('R'.$f, $mtx->h17a)
-                                    ->setCellValue('S'.$f, $mtx->h18a)
-                                    ->setCellValue('T'.$f, $mtx->h19a)
-                                    ->setCellValue('U'.$f, $mtx->h20a)
-                                    ->setCellValue('V'.$f, $mtx->h21a)
-                                    ->setCellValue('W'.$f, $mtx->h22a)
-                                    ->setCellValue('X'.$f, $mtx->h23a)
-                                    ->setCellValue('Y'.$f, $mtx->h24a);
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue('Z'.$f,
-                                    	'=SUM(B'.$f.':Y'.$f.')');
-                                $f++;
-                            }
-
-                            $excel->setActiveSheetIndex(0)
-                                ->setCellValue('A'.$f, 'CSMO_TOTAL_HORA');
-
-                            for ($i = 1; $i<=24; $i++) {
-                                $excel->setActiveSheetIndex(0)
-                                    ->setCellValue($cols[$i].$f,
+	                            for ($i = 1; $i<=24; $i++) {
+	                                $sheet->setCellValue($cols[$i].$f,
                                 		'=SUM('.$cols[$i].($f-count($mtx_fpo)).
                                 			':'.$cols[$i].($f-1).')');
-                            }
+	                            }
+	                            $sheet->setCellValue('Y'.$f, 'CSMO_TOTAL');
 
-                            /* $excel->setActiveSheetIndex(0)
-                                ->setCellValue('Y'.$f, 'CSMO_TOTAL'); */
-
-                            $excel->setActiveSheetIndex(0)->setCellValue('Z'.$f,
-                            	'=SUM(Z'.($f-count($mtx_fpo)).':Z'.($f-1).')');
-                        }
-
-                        break;
-                }
-
+	                            $sheet->setCellValue('Z'.$f, '=SUM(Z'.
+	                            	($f-count($mtx_fpo)).':Z'.($f-1).')');
+	                        }
+	                        break;
+	                }
+	            }
             }
-
             $excel->setActiveSheetIndex(0);
         }
 
-        $filename = 'mtxcsmo_';
+        $filename = 'mtxcsmo_' . $this->params['id'];
 
-        $usrtype = Doo::session()->get('usrtype');
+        /*$usrtype = Doo::session()->get('usrtype');
         if ($usrtype == 'corp') {
         	$grp = Doo::session()->get('grp');
         	if (is_object($grp) && ($grp instanceof M02GruposCliente)) {
@@ -604,9 +554,9 @@ class ReportController extends DooController {
         	if (is_object($cte) && ($cte instanceof M02Clientes)) {
         		$filename .= 'cte_' . $cte->id_cliente;
         	}
-        }
+        }*/
 
-        $filename .= '.xls';
+        $filename .=  '_' . Doo::session()->getId() . '.xls';
 
     	$objWriter = PHPExcel_IOFactory::createWriter($excel, 'Excel5');
         $objWriter->save(Doo::conf()->SITE_PATH . 'temp/' . $filename);
