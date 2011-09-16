@@ -67,11 +67,11 @@ a:hover {
     overflow: hidden;
     border-bottom: 1px solid #ccc;
     background: #e0e6c6;
-    display: none;
+    /* display: none; */
     /* z-index: 1000; */
-    position: absolute;
-    left: 183px;
-    width: 100%;
+    /* position: absolute; */
+    /* left: 184px; */
+    /* width: 100%; */
 }
 
 #sidebar {
@@ -101,13 +101,13 @@ a:hover {
 
 .info {
     /* background: #fff; */
-    position: absolute;
+    /* position: absolute; */
     /* left: 30px; */
     /* width: 810px; */
-    margin-left: 184px;
-    height: 528px;
-    padding-right: 28px;
-    overflow: auto;
+    height: 624px;
+    /* padding-right: 28px; */
+    overflow-x: hidden;
+    overflow-y: scroll;
     /* -webkit-border-top-right-radius: 15px;
     -moz-border-radius-topright: 15px;
     border-top-right-radius: 15px; */
@@ -133,9 +133,10 @@ div#logo {
 
 #alertas {
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: bold !important;
+    text-align: center;
     padding-top: 20px;
-    margin-left: 183px;
+    /* margin-left: 183px; */
     height: 40px;
 }
 
@@ -180,7 +181,7 @@ form {
 }
 
 .top-bar p {
-    font-weight: bold;
+    font-weight: bold !important;
 }
 
 #data-container {
@@ -247,7 +248,7 @@ form {
     background: #d9dbd1;
     text-align: center;
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: bold !important;
     margin: 0 auto;
     /* z-index: 1000; */
 }
@@ -261,14 +262,6 @@ form {
 }
 
 #box3, #box4 {
-    margin: 0 auto;
-    position: relative;
-    width: 700px;
-    margin-left: 50px;
-}
-
-.grilla {
-    display: none;
     margin: 0 auto;
     position: relative;
     width: 700px;
@@ -348,12 +341,12 @@ form {
 /** apps buttons **/
 
 #home a {
-    /* background: url(../img/vatia-sprites-all.png) 0 0 no-repeat; */
+    background: url(../img/bg-app.png) 0 0 no-repeat;
 }
 
 #home a:hover,
 .selected#matriz-app a {
-    /* background-position: 0 -78px !important; */
+    background-position: 0 -78px !important;
 }
 
 #home a:hover {
@@ -366,12 +359,12 @@ form {
 
 
 #logout a {
-    /* background: url(../img/vatia-sprites-all.png) 0 0 no-repeat; */
+    background: url(../img/bg-app.png) 0 0 no-repeat;
 }
 
 #logout a:hover,
 .selected#matriz-app a {
-    /* background-position: 0 -78px !important; */
+    background-position: 0 -78px !important;
 }
 
 #logout a:hover {
@@ -421,16 +414,12 @@ form {
 
 #censo-app a {
     background: url(../img/vatia-sprites-all.png) 0 -312px no-repeat;
-    /* opacity: 0.2;
-    filter: alpha(opacity=20); */
     cursor: default;
 }
 
 #censo-app a:hover,
 .selected#censo-app a {
     background-position: 0 -390px !important;
-    /* opacity: 0.2;
-    filter: alpha(opacity=20); */
     cursor: default;
 }
 
@@ -445,16 +434,12 @@ form {
 
 #calculo-app a {
     background: url(../img/vatia-sprites-all.png) 0 -468px no-repeat;
-    /* opacity: 0.2;
-    filter: alpha(opacity=20); */
     cursor: default;
 }
 
 #calculo-app a:hover,
 .selected#calculo-app a {
     background-position: 0 -547px !important;
-    /* opacity: 0.2;
-    filter: alpha(opacity=20); */
     cursor: default;
 }
 
@@ -469,16 +454,12 @@ form {
 
 #factura-app a {
     background: url(../img/vatia-sprites-all.png) 0 -624px no-repeat;
-    /* opacity: 0.2;
-    filter: alpha(opacity=20); */
     cursor: default;
 }
 
 #factura-app a:hover,
 .selected#factura-app a {
     background-position: 0 -702px !important;
-    /* opacity: 0.2;
-    filter: alpha(opacity=20); */
     cursor: default;
 }
 
@@ -494,7 +475,7 @@ form {
 
 #action-btns {
     overflow: hidden;
-    width: 100px;
+    width: 210px;
     margin: 0 auto;
 }
 
@@ -699,9 +680,9 @@ div#nivel {
 div#slider-range {
     /* background: url(../img/progress-bar-bg.png) repeat-x #000; */
     width: 540px;
-    /* height: 40px; */
+    height: 40px;
     /* margin: 0 auto; */
-    /* padding-top: 40px; */
+    padding-top: 40px;
 }
 
 div#date-slider-range {
@@ -718,88 +699,10 @@ div#graph-container {
     margin: 0 auto;
 }
 
-.box-slide {
-    /* clear: both; */
-    overflow: hidden;
-    width: 800px;
-    margin: 20px auto;
-    /* position: relative; */
-    padding-left: 120px;
-}
-
-.box-slide input[type="checkbox"] {
-    margin: 0 60% 0 40%;
-}
-
 div.cuenta {
     width: 500px;
     margin: 20px auto;
     padding-left: 50px;
-}
-
-#slides li {
-    float: left;
-    list-style-type: none;
-    margin: 0 6px;
-}
-
-rigth-btn#slides li {
-    float: right;
-    list-style-type: none;
-    margin-left: -30px;
-}
-
-#slides li.boton a {
-    display: block;
-    line-height: 20px;
-    padding: 2px 0;
-    position: relative;
-    height: 32px;
-    width: 33px;
-}
-
-#left-btn a {
-    background: url(../img/vatia-sprites-all.png) 0 -1892px no-repeat;
-    width: 105px;
-}
-
-#left-btn a:hover {
-    background-position: -36px -1892px !important;
-}
-
-#right-btn a {
-    background: url(../img/vatia-sprites-all.png) -72px -1892px no-repeat;
-    width: 105px;
-}
-
-#right-btn a:hover {
-    background-position: -108px -1892px !important;
-}
-
-a.options {
-    font-size: 180% !important;
-    letter-spacing: 0px;
-}
-
-a.options:hover, li#todos a:hover {
-    text-decoration: none;
-    color: #6c7a23;
-}
-
-li.list-item {
-    width: 80px;
-}
-
-#slides li.separator {
-    vertical-align: bottom;
-    padding-top: 10px;
-    font-weight: bold;
-    margin: 0 10px;
-}
-
-li#num-chek  {
-    height: 48px;
-    overflow: hidden;
 }
 
 .cuenta li#num-chek {
@@ -810,11 +713,6 @@ li#num-chek  {
 .cuenta li#no-cb {
     height: 20px;
     overflow: hidden;
-}
-
-ul.listado {
-    width: 580px;
-    display: inline-block;
 }
 
 .cuenta ul.listado {
@@ -916,6 +814,10 @@ ul#export-items-fp li {
     background: url(../img/vatia-sprites-all.png) 0 -1677px no-repeat;
     width: 94px;
     height: 26px;
+}
+
+#grafico a.active {
+    background-position: -97px -1677px !important;
 }
 
 #grafico a:hover,
@@ -1269,41 +1171,64 @@ a#help:hover {
     float: left;
 }
 
-#report,
-#report iframe {
+#report {
     display: none;
-    width: 0;
-    height: 0;
+}
+
+.grilla {
+    display: none;
+    margin: 0 auto;
+    position: relative;
+    width: 700px;
+    margin-left: 50px;
+}
+
+.grilla table {
+    width: 100%;
 }
 
 .grilla .box th {
-    padding: 4px;
+    padding: 2px !important;
     text-align: center;
     text-transform: uppercase;
-    text-weight: bold;
+    font-weight: bold !important;
     border: 1px dotted;
+    background-color: #e0e6c6;
 }
 
 .grilla .box td {
-    padding: 4px;
+    padding: 4px !important;
+    padding-right: 8px !important;
     text-align: right;
     border: 1px dotted;
 }
 
-#data-container #ultimos-consumos th,
-#data-container #csmo-actual th,
-#data-container #csmo-promedio th {
-    padding: 4px;
-    text-align: center;
-    text-transform: uppercase;
-    text-weight: bold;
-    border: 1px dotted;
+#ultimos-consumos, #csmo-actual, #csmo-promedio {
+    padding: 12px;
 }
 
-#data-container #ultimos-consumos td,
-#data-container #csmo-actual td,
-#data-container #csmo-promedio td {
-    padding: 4px;
+#ultimos-consumos table,
+#csmo-actual table,
+#csmo-promedio table {
+    width: 100%;
+}
+
+#ultimos-consumos th,
+#csmo-actual th,
+#csmo-promedio th {
+    padding: 2px !important;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold !important;
+    border: 1px dotted;
+    background-color: #e0e6c6;
+}
+
+#ultimos-consumos td,
+#csmo-actual td,
+#csmo-promedio td {
+    padding: 4px !important;
+    padding-right: 8px !important;
     text-align: right;
     border: 1px dotted;
 }
@@ -1316,3 +1241,4 @@ a#help:hover {
     overflow-x: hidden;
     overflow-y: hidden;
 }
+
