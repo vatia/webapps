@@ -6,7 +6,12 @@ class ReportController extends DooController {
 
     	set_time_limit(0);
 
-        /*define('_PHPEXCEL_LIB',
+    	Doo::loadModel('M00Usuarios');
+    	Doo::loadModel('M02Clientes');
+    	Doo::loadModel('M02GruposCliente');
+    	Doo::loadModel('M03Energia');
+
+    	/*define('_PHPEXCEL_LIB',
             Doo::conf()->SITE_PATH . 'webapps/libraries/');
 
         require_once _PHPEXCEL_LIB . 'PHPExcel.php';*/
@@ -541,25 +546,13 @@ class ReportController extends DooController {
             $excel->setActiveSheetIndex(0);
         }
 
-        $filename = 'mtxcsmo_' . $this->params['id'];
+        $filename =  Doo::session()->getId() . '.xls';
+        $xls = Doo::conf()->SITE_PATH . 'temp/' . $filename;
 
-        /*$usrtype = Doo::session()->get('usrtype');
-        if ($usrtype == 'corp') {
-        	$grp = Doo::session()->get('grp');
-        	if (is_object($grp) && ($grp instanceof M02GruposCliente)) {
-        		$filename .= 'corp_' . $grp->id;
-        	}
-        } else {
-        	$cte = Doo::session()->get('cte');
-        	if (is_object($cte) && ($cte instanceof M02Clientes)) {
-        		$filename .= 'cte_' . $cte->id_cliente;
-        	}
-        }*/
-
-        $filename .=  '_' . Doo::session()->getId() . '.xls';
-
-    	$objWriter = PHPExcel_IOFactory::createWriter($excel, 'Excel5');
-        $objWriter->save(Doo::conf()->SITE_PATH . 'temp/' . $filename);
+    	if (is_file($xls)) {
+    		unlink($xls);
+	    }
+    	PHPExcel_IOFactory::createWriter($excel, 'Excel5')->save($xls);
 
         self::toJSON(array('file' => Doo::conf()->APP_URL . 'temp/' . $filename), true);
         //self::load()->download(Doo::conf()->SITE_PATH . 'temp/' . $filename);
