@@ -18,10 +18,12 @@ class FrontController extends DooController {
 
                 $data['fecha_ini'] = date('Y-m-d', mktime(0, 0, 0,
                 	date('m'), 2, date('Y')));
-                $data['fecha_fin'] = date('Y-m-d');
+                $data['fecha_fin'] = date('Y-m-d', mktime(0, 0, 0,
+                	date('m'), date('d')-3, date('Y')));
 
                 $data['fecha_ini_min'] = '2011-01-02';
-                $data['fecha_fin_max'] = date('Y-m-d');
+                $data['fecha_fin_max'] = date('Y-m-d', mktime(0, 0, 0,
+                	date('m'), date('d')-3, date('Y')));
 
                 $data['graph'] = 'global/img/graph-line.png';
 
