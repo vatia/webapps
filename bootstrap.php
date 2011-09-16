@@ -7,7 +7,8 @@ require_once './webapps/config/db.conf.php';
 
 require_once $config['BASE_PATH'] . 'Doo.php';
 require_once $config['BASE_PATH'] . 'app/DooConfig.php';
-//require_once $config['BASE_PATH'] . 'diagnostic/debug.php';
+//require_once $config['BASE_PATH'] . 'deployment/deploy.php';
+require_once $config['BASE_PATH'] . 'diagnostic/debug.php';
 
 function __autoload($classname){
 	Doo::autoload($classname);
@@ -20,13 +21,13 @@ Doo::conf()->set($config);
 try {
     Doo::db()->setMap($dbmap);
     Doo::db()->setDb($dbconfig, Doo::conf()->APP_MODE);
-    Doo::db()->sql_tracking = true;
+    Doo::db()->sql_tracking = Doo::conf()->DEBUG_ENABLED;
 } catch(SqlMagicException $e) {
     Doo::logger()->err($e->getMessage());
 }
 
 Doo::acl()->rules = $acl;
-Doo::acl()->defaultFailedRoute = Doo::conf()->APP_URL . '/error';
+Doo::acl()->defaultFailedRoute = '/error';
 
 Doo::app()->route = $route;
 
@@ -37,7 +38,9 @@ try {
     echo $e->getMessage();
 }
 
-Doo::logger()->writeDbProfiles();
-Doo::logger()->writeProfiles();
-Doo::logger()->writeLogs();
-Doo::logger()->writeTraces();
+if (Doo::conf()->DEBUG_ENABLED === true) {
+	Doo::logger()->writeDbProfiles();
+	Doo::logger()->writeProfiles();
+	Doo::logger()->writeLogs();
+	Doo::logger()->writeTraces();
+}
