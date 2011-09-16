@@ -29,17 +29,10 @@ class MatrixCsmoController extends DooController {
         $enrgy = new M03Energia();
         $enrgy->m02cli_id_cliente = $this->id_cliente;
 
-        $data['matrix'] = self::db()->find($enrgy,
-                    array(
-                    /*'select' => 'fecha, h01a, h02a, h03a, h04a, h05a, h06a, h07a,
-                    			h08a, h09a, h10a, h11a, h12a, h13a, h14a, h15a,
-                				h16a, h17a, h18a, h19a, h20a, h21a, h22a, h23a,
-                				h24a, version',*/
-                    'where' => 'fecha BETWEEN ? AND ?',
-                    'param' => array(
-                                $this->fecha_ini,
-                                $this->fecha_fin),
-                    'asc' => 'fecha'));
+        $data['matrix'] = self::db()->find($enrgy, array(
+            'where' => 'fecha BETWEEN ? AND ?',
+            'param' => array($this->fecha_ini, $this->fecha_fin),
+            'asc' => 'fecha'));
 
         Doo::session()->matrix_act = $data['matrix'];
 
@@ -56,7 +49,6 @@ class MatrixCsmoController extends DooController {
 	        	}
 	        }
         }
-        //self::view()->setTagClass('TemplateTag');
         $this->view()->render('act', $data);
     }
 
@@ -71,17 +63,10 @@ class MatrixCsmoController extends DooController {
         $enrgy = new M03Energia();
         $enrgy->m02cli_id_cliente = $this->id_cliente;
 
-        $data['matrix'] = self::db()->find($enrgy,
-                    array(
-                    /*'select' => 'fecha, h01r, h02r, h03r, h04r, h05r, h06r, h07r,
-                    			h08r, h09r, h10r, h11r, h12r, h13r, h14r, h15r,
-                				h16r, h17r, h18r, h19r, h20r, h21r, h22r, h23r,
-                				h24r, version',*/
-                    'where' => 'fecha BETWEEN ? AND ?',
-                    'param' => array(
-                                $this->fecha_ini,
-                                $this->fecha_fin),
-                    'asc' => 'fecha'));
+        $data['matrix'] = self::db()->find($enrgy, array(
+        	'where' => 'fecha BETWEEN ? AND ?',
+             'param' => array($this->fecha_ini, $this->fecha_fin),
+             'asc' => 'fecha'));
 
         Doo::session()->matrix_rea = $data['matrix'];
 
@@ -108,8 +93,6 @@ class MatrixCsmoController extends DooController {
 
     public function pen() {
 
-        // TODO: excedente reactiva function
-
         self::params();
 
         $data['id_cliente'] = $this->id_cliente;
@@ -119,17 +102,10 @@ class MatrixCsmoController extends DooController {
         $enrgy = new M03Energia();
         $enrgy->m02cli_id_cliente = $this->id_cliente;
 
-        $data['matrix'] = self::db()->find($enrgy,
-                    array(
-                    /*'select' => 'fecha, h01a, h02a, h03a, h04a, h05a, h06a, h07a,
-                    			h08a, h09a, h10a, h11a, h12a, h13a, h14a, h15a,
-                				h16a, h17a, h18a, h19a, h20a, h21a, h22a, h23a,
-                				h24a, version',*/
-                    'where' => 'fecha BETWEEN ? AND ?',
-                    'param' => array(
-                                $this->fecha_ini,
-                                $this->fecha_fin),
-                    'asc' => 'fecha'));
+        $data['matrix'] = self::db()->find($enrgy, array(
+        	'where' => 'fecha BETWEEN ? AND ?',
+            'param' => array($this->fecha_ini, $this->fecha_fin),
+            'asc' => 'fecha'));
 
         Doo::session()->matrix_pen = $data['matrix'];
 
@@ -156,8 +132,6 @@ class MatrixCsmoController extends DooController {
 
     public function fpo() {
 
-        // TODO: factor potencia function
-
         self::params();
 
         $data['id_cliente'] = $this->id_cliente;
@@ -167,17 +141,10 @@ class MatrixCsmoController extends DooController {
         $enrgy = new M03Energia();
         $enrgy->m02cli_id_cliente = $this->id_cliente;
 
-        $data['matrix'] = self::db()->find($enrgy,
-                    array(
-                    /*'select' => 'fecha, h01a, h02a, h03a, h04a, h05a, h06a, h07a,
-                    			h08a, h09a, h10a, h11a, h12a, h13a, h14a, h15a,
-                				h16a, h17a, h18a, h19a, h20a, h21a, h22a, h23a,
-                				h24a, version',*/
-                    'where' => 'fecha BETWEEN ? AND ?',
-                    'param' => array(
-                                $this->fecha_ini,
-                                $this->fecha_fin),
-                    'asc' => 'fecha'));
+        $data['matrix'] = self::db()->find($enrgy, array(
+        	'where' => 'fecha BETWEEN ? AND ?',
+            'param' => array($this->fecha_ini, $this->fecha_fin),
+            'asc' => 'fecha'));
 
         Doo::session()->matrix_fpo = $data['matrix'];
 
