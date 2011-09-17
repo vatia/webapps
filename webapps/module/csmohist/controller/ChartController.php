@@ -27,44 +27,31 @@ class ChartController extends DooController {
         		'asc' => 'm05_facturas.ciclo'));
 	        Doo::logger()->endDbProfile('find_fact');
 
-	        $jpgraph_path = Doo::conf()->SITE_PATH . 'webapps/libraries/jpgraph/';
+	        define('_JPGRAPH_LIB', Doo::conf()->SITE_PATH .
+	        	'webapps/libraries/jpgraph/');
 
-	        require_once $jpgraph_path . 'jpgraph.php';
-	        require_once $jpgraph_path . 'jpgraph_bar.php';
-	        require_once $jpgraph_path . 'jpgraph_line.php';
+	        require_once _JPGRAPH_LIB . 'jpgraph.php';
+	        require_once _JPGRAPH_LIB . 'jpgraph_bar.php';
+	        require_once _JPGRAPH_LIB . 'jpgraph_line.php';
 
-	        $ciclos = $activa = $reactiva = array();
+	        $ciclos = $activa = $reactiva = array(0);
 
 	        $meses = array(
-	        	'01' => 'Ene',
-	        	'02' => 'Feb',
-	        	'03' => 'Mar',
-	        	'04' => 'Abr',
-	        	'05' => 'May',
-	        	'06' => 'Jun',
-	        	'07' => 'Jul',
-	        	'08' => 'Ago',
-	        	'09' => 'Sep',
-	        	'10' => 'Oct',
-	        	'11' => 'Nov',
-	        	'12' => 'Dic'
-	        );
+	        	'01' => 'Ene', '02' => 'Feb', '03' => 'Mar',
+	        	'04' => 'Abr', '05' => 'May', '06' => 'Jun',
+	        	'07' => 'Jul', '08' => 'Ago', '09' => 'Sep',
+	        	'10' => 'Oct', '11' => 'Nov', '12' => 'Dic');
 
 	        if (is_array($facturas) && count($facturas) > 0) {
+	        	array_pop($ciclos); array_pop($activa); array_pop($reactiva);
 	        	foreach ($facturas as $fact) {
-
 	        		$c_year = substr($fact->ciclo, 0, 4);
 	        		$c_month = substr($fact->ciclo, 4, 2);
-
 	        		array_push($ciclos, $meses[$c_month] . ' ' . $c_year);
 	                array_push($activa, $fact->csm_act);
 	                array_push($reactiva, $fact->csm_rea);
 		        }
 	        }
-	        if ((count($activa) == 0) && (count($reactiva) == 0)) {
-	            $activa = $reactiva = array(0);
-	        }
-
 	        $graph = new Graph(650, 220, 'auto');
 
 	        $graph->SetScale('textlin');
@@ -88,19 +75,11 @@ class ChartController extends DooController {
 
 	        $line_act = new LinePlot($activa);
 	        $line_act->SetWeight(2);
-	        //$line_act->SetBarCenter(true);
-
-	        //$line_rea = new LinePlot($reactiva);
-	        //$line_rea->SetWeight(2);
-	        //$line_rea->SetBarCenter(true);
 
 	        $graph->Add(new GroupBarPlot(array($bar_act, $bar_rea)));
 	        $graph->Add($line_act);
-	        //$graph->Add($line_rea);
 
 	        $graph->title->Set($cte->id_cliente.' - '.$cte->nombre_facturacion);
-
-	        //$graph->legend->SetFrameWeight(1);
 
 	        $graph->xaxis->title->Set('Ciclos Facturacion');
 	        $graph->xaxis->SetTickLabels($ciclos);
@@ -111,9 +90,7 @@ class ChartController extends DooController {
 	        $graph->yaxis->HideLine(false);
 	        $graph->yaxis->HideTicks(false, false);
 
-	        $filename = Doo::session()->getId() . '_' . $cte->id_cliente .
-	             'csmohist' . $this->params['ciclo_ini'] .
-	            	$this->params['ciclo_fin'] . '.png';
+	        $filename = Doo::session()->getId() . '.png';
 
             $img = Doo::conf()->SITE_PATH . 'temp/' . $filename;
 
@@ -130,5 +107,3 @@ class ChartController extends DooController {
         }
     }
 }
-
-
