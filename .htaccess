@@ -1,6 +1,5 @@
-
 RewriteEngine On
-RewriteBase /demo
+RewriteBase /
 
 # if a directory or a file exists, use it directly
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -8,30 +7,120 @@ RewriteCond %{REQUEST_FILENAME} !-d
 
 # otherwise forward it to index.php
 RewriteRule ^(.*)$ index.php
-RewriteRule ^(.*)$ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
-
-#RewriteRule ^(.*)$ index.php?rt=$1 [L,QSA]
 #RewriteRule ^(.*)$ index.php/$l
-#RewriteRule ^(.*)$ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+#RewriteRule ^(.*)$ index.php?rt=$1 [L,QSA]
+RewriteRule ^(.*)$ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
 
 #RewriteRule !\.(js|ico|gif|jpg|png|css|swf|mpg|mpeg|avi|flv)$ index.php
 
-# display no errs to user
-#php_flag display_startup_errors off
-#php_flag display_errors off
-#php_flag html_errors off
+<IfModule mod_php5.c>
+    
+    php_value magic_quotes_gpc 0
+    php_value register_globals 0
+    
+    # display errors
+    php_flag display_startup_errors on
+    php_flag display_errors on
+    php_flag html_errors on
 
-# log to file
-#php_flag log_errors on
-#php_value error_log /vhost/webapps.vatia.co/logs/php.log
+    # logger
+    php_flag log_errors on
+    php_value error_log /vhost/webapps.vatia.co/htdocs/logs/php.log
 
-# memory limit
-#php_value memory_limit 256M
+    # resource limits
+    php_value memory_limit 512M
+    php_value max_execution_time 0
+    
+    # session
+    php_value session.auto_start 0
+    #php_value session.gc_maxlifetime 3600
+    #php_value session.gc_probability 1
+    #php_value session.gc_divisor 1
+    #php_value session.use_trans_sid 3600
+    #php_value session.use_only_cookies 1
+    #php_value session.cookie_lifetime 300
+    php_value session.save_path /vhost/webapps.vatia.co/htdocs/temp/sessions
 
-# session
-#php_value session.gc_maxlifetime 3600
-#php_value session.save_path /vhost/webapps.vatia.co/htdocs/temp/sessions
+    #php_value output_handler ob_gzhandler
+
+</IfModule>
 
 #BrowserMatch MSIE best-standards-support
 #Header set X-UA-Compatible IE=edge env=best-standards-support
+
+ErrorDocument 404 /error
+
+# compress files
+<ifModule mod_deflate.c>
+    <filesMatch "\.(css|js|x?html?|php)$">
+        SetOutputFilter DEFLATE
+    </filesMatch>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/css text/javascript application/javascript application/x-javascript
+</ifModule>
+
+<ifModule mod_gzip.c>
+    mod_gzip_on Yes
+    mod_gzip_dechunk Yes
+    mod_gzip_item_include file \.(html?|txt|css|js|php|pl)$
+    mod_gzip_item_include handler ^cgi-script$
+    mod_gzip_item_include mime ^text/.*
+    mod_gzip_item_include mime ^application/x-javascript.*
+    mod_gzip_item_exclude mime ^image/.*
+    mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</ifModule>
+
+# expires headers
+<IfModule mod_expires.c>
+    <FilesMatch "\.(ico|pdf|flv|jpg|jpe?g|png|gif|js|css|swf)$">
+        ExpiresActive On
+        ExpiresDefault "access plus 1 seconds"
+    </FilesMatch>
+    ExpiresByType image/jpg A14400
+    ExpiresByType image/jpeg A14400
+    ExpiresByType image/png A14400
+    ExpiresByType image/gif A14400
+    ExpiresByType image/bmp A14400
+    ExpiresByType image/x-icon A14400
+    ExpiresByType text/plain A62
+    ExpiresByType text/html A90
+    ExpiresByType text/xml A90
+    ExpiresByType text/css A900
+    ExpiresByType text/javascript A900
+    ExpiresByType application/javascript A900
+    ExpiresByType application/x-javascript A900
+    ExpiresByType application/xhtml+xml A900
+    ExpiresByType application/x-shockwave-flash A3600
+</IfModule>
+
+# cache control headers
+<IfModule mod_headers.c>
+    <filesMatch "\\.(ico|pdf|flv|jpg|jp?g|png|gif|swf)$">
+        Header set Cache-Control "max-age=2592000, public"
+    </filesMatch>
+    <filesMatch "\\.(css)$">
+        Header set Cache-Control "max-age=604800, public"
+    </filesMatch>
+    <filesMatch "\\.(js)$">
+        Header set Cache-Control "max-age=216000, private"
+    </filesMatch>
+    <filesMatch "\\.(xml|txt)$">
+        Header set Cache-Control "max-age=216000, public, must-revalidate"
+    </filesMatch>
+    <filesMatch "\\.(html|htm|php)$">
+        Header set Cache-Control "max-age=1, private, must-revalidate"
+    </filesMatch>
+</IfModule>
+
+# turn off ETags
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+FileETag None
+
+# turn off last modified header except for html docs
+<IfModule mod_headers.c>
+    <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css)$">
+        Header unset Last-Modified
+    </FilesMatch>
+</IfModule>
 
